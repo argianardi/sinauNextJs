@@ -98,8 +98,24 @@ Next.js mendukung berbagai jenis rute:
 
   - Halaman Utama: /, contohnya: https://www.basedomain.com/
   - Halaman Daftar Kategori Berita: /news, contohnya: https://www.basedomain.com/news
-  - Halaman Daftar Berita dalam Kategori: /news/parameter-bebas, contohnya: https://www.basedomain.com/politics
-  - Halaman Detail Berita: /news/politics/parameter-bebas, contohnya: https://www.basedomain.com/politics/strategi-politik-2024
+  - Halaman Daftar Berita dalam Kategori: /news/{parameter-bebas}, contohnya: https://www.basedomain.com/politics
+  - Halaman Detail Berita: /news/politics/{parameter-bebas}, contohnya: https://www.basedomain.com/politics/strategi-politik-2024
+
+  Untuk mengambil query parameter dari dinamc routes tersebut kita bisa menggunakan `useRouter` dari next/router
+
+  ```
+  import { useRouter } from 'next/router';
+  import React from 'react';
+
+  const DetailProduct = () => {
+    const { query } = useRouter();
+    console.log(query.productTitle);
+
+    return <div>{query.productTitle}</div>;
+  };
+
+  export default DetailProduct;
+  ```
 
 - Nested Dinamic Routes <br/> Kita dapat menggabungkan rute dinamis dengan rute biasa dan bersarang. Berikut contoh struktur filenya:
 
@@ -115,5 +131,5 @@ Next.js mendukung berbagai jenis rute:
   URL yang dihasilkan dari struktur file di atas adalah:
 
   - Halaman Utama: /, contohnya: https://www.basedomain.com
-  - Halaman detail postingan: /posts/parameter-bebas, contohnya: https://www.basedomain.com/posts/memories-of-paris
-  - Halaman Komentar: /posts/parameter-bebas/comments, contohnya: https://www.example.com/posts/memories-of-paris/comments
+  - Halaman detail postingan: /posts/{parameter-bebas}, contohnya: https://www.basedomain.com/posts/memories-of-paris
+  - Halaman Komentar: /posts/{parameter-bebas}/comments, contohnya: https://www.example.com/posts/memories-of-paris/comments
