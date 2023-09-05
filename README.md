@@ -200,3 +200,27 @@ Berikut contoh penggunaannya untuk case aplikasi blog yang terdiri dari berbagai
   Dalam contoh diatas, kita menggunakan Catch-All Routes di file `[...slug].tsx` untuk menangani segmen path setelah `/blog/`. Ini memungkinkan kita untuk menampilkan artikel berdasarkan kategori dan judul artikel dalam URL.
 
   Misalnya, URL `http://localhost:3000/blog/sports/monday/3%20hottest%20news%20today` akan diarahkan ke halaman `BlogDetail`, di mana kita dapat menampilkan artikel dengan kategori "sports" dan "monday" berjudul "3 hottest news today". Dan variable `slug` akan berisi array of string seperti : [ "sports", "monday", "3 hottest news today" ].
+
+### Link
+
+Link adalah komponen dalam Next js yang digunakan untuk membuat tautan (link) antara halaman dalam sebuah aplikasi web. Fungsinya adalah memungkinkan user untuk berpindah dari satu halaman ke halaman lain tanpa memerlukan reload halaman secara lengkap. Dengan kata lain, Link digunakan untuk mengelola navigasi dalam sebuah aplikasi web secara responsif dan efisien. Link dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing/linking-and-navigating). Berikut contoh penggunaannya
+
+```
+import Link from 'next/link';
+import React from 'react';
+
+const LoginPage = () => {
+  return (
+    <div>
+      <h1>Login Page</h1>
+      <p>
+        Belum punya akun?, Register <Link href={'/auth/register'}>di sini</Link>{' '}
+      </p>
+    </div>
+  );
+};
+
+export default LoginPage;
+```
+
+Dengan menggunakan komponen `Link` dari `next/link` user dapat diarahkan dari login page ke register page.
