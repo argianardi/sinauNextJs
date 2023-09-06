@@ -15,6 +15,10 @@
          <li><a href="#dynamic-routes">Dynamic Route</a></li>
          <li><a href="#nested-dynamic-routes">Nested Dinamic Route</a></li>
          <li><a href="#catch-all-routes">Catch All Routes</a></li>
+         <li><a href="#nested-dynamic-routes">Nested Dinamic Route</a></li>
+         <li><a href="#link">Link</a></li>
+         <li><a href="#nested-dynamic-routes">Nested Dinamic Route</a></li>
+         <li><a href="#imperative-routing">Imperative Routing</a></li>
        </ul>
   </details>
 
@@ -224,3 +228,72 @@ export default LoginPage;
 ```
 
 Dengan menggunakan komponen `Link` dari `next/link` user dapat diarahkan dari login page ke register page.
+
+### Imperative Routing
+
+Merupakan pendekatan dalam Next js yang memungkinkan kita untuk melakukan navigasi dari satu halaman ke halaman lain secara programatik, misalnya setelah mengeksekusi suatu tindakan atau dalam respons terhadap suatu peristiwa. Imperative routing dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing/linking-and-navigating#imperative-routing).
+
+<details >
+    <summary><a href="#atomic-design">Arti programatik </a></summary>
+    Mengendalikan atau menjalankan suatu tindakan atau operasi berdasarkan logika atau instruksi dari kode program, bukan secara langsung melalui interaksi pengguna.
+</details>
+
+Berikut contoh penggunaannya di coding:
+
+```
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+const LoginPage = () => {
+  const router = useRouter();
+
+  const handleLogin = () => {
+    //-----------------------------------------------
+    router.push('/product');
+    //-----------------------------------------------
+  };
+
+  return (
+    <div>
+      <h1>Login Page</h1>
+      <button onClick={handleLogin}>Login</button>
+      <p>
+        Belum punya akun?, Register <Link href={'/auth/register'}>di sini</Link>{' '}
+      </p>
+    </div>
+  );
+};
+
+export default LoginPage;
+```
+
+[source code](https://github.com/argianardi/sinauNextJs/blob/routes/src/pages/auth/login.tsx)
+
+Di contoh di atas setelah user menekan button Login, user akan di-direct ke halaman product, menggunakan `userRouter` dari Next js.
+
+Berikut contoh case lain untuk men-direct user ke halaman lain ketika user belum login:
+
+```
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+
+const About = () => {
+  const router = useRouter();
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    if (!isLogin) {
+      router.push('/auth/login');
+    }
+  }, []);
+
+  return <div>About</div>;
+};
+
+export default About;
+```
+
+[source code](https://github.com/argianardi/sinauNextJs/blob/routes/src/pages/about/index.tsx)
+
+Sehingga ketika user masuk ke halaman about dalam keadaan belum login maka user akan langsung di-direct ke halaman login.
