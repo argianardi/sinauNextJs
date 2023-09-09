@@ -330,7 +330,7 @@ const AppShell = ({ children }: AppShellProps) => {
 export default AppShell;
 ```
 
-[sorce code]()
+[sorce code](https://github.com/argianardi/sinauNextJs/blob/features/src/components/layouts/AppShell/index.tsx)
 
 <details open>
     <summary>Penjelasan code:</summary>
