@@ -21,6 +21,12 @@
          <li><a href="#imperative-routing">Imperative Routing</a></li>
        </ul>
   </details>
+- <details open>
+       <summary><a href="#kumpulan-fitur">Kumpulan Fitur</a></summary>
+       <ul>
+         <li><a href="#conditional-rendering-sebuah-component-di-page-tertentu">Conditional Rendering Komponen di pages Tertentu</a></li>
+       </ul>
+  </details>
 
 ## Atomic Design
 
@@ -319,9 +325,7 @@ const AppShell = ({ children }: AppShellProps) => {
 
   return (
     <main>
-    //----------------------------------------------------------------------
       {!disabledNavbar.includes(pathname) && <Navbar />}
-    //----------------------------------------------------------------------
       {children}
     </main>
   );
@@ -333,6 +337,18 @@ export default AppShell;
 [sorce code](https://github.com/argianardi/sinauNextJs/blob/features/src/components/layouts/AppShell/index.tsx)
 
 <details open>
-    <summary>Penjelasan code:</summary>
-    Pada code conditional rendering diatas akan diperiksa apakah `pathname` saat ini sama atau tidak dengan path yang ada dalam array `disabledNavbar`. Jika tidak sama, maka Navbar akan ditampilkan di dalam page saat ini. Ini digunakan untuk mengendalikan apakah Navbar akan muncul atau tidak berdasarkan path saat ini.
+<summary>Penjelasan code:</summary>
+
+Pada code conditional rendering `{!disabledNavbar.includes(pathname) && <Navbar />}` akan diperiksa apakah `pathname` saat ini (page yang sedang di-render) sama atau tidak dengan path yang ada dalam array `disabledNavbar`. Jika tidak sama, maka Navbar akan ditampilkan di dalam page saat ini. Ini digunakan untuk mengendalikan apakah Navbar akan muncul atau tidak berdasarkan path saat ini.
+
+</details>
+
+<details open>
+<summary>Berikut penjelasanya:</summary>
+
+- elements <br/> Merupakan gabungan atoms dan molecules, berisi komponen-komponen dasar yang tidak dapat dipecah lagi menjadi elemen yang lebih sederhana. Ini mencakup elemen-elemen seperti Button.jsx dan Input.jsx.
+- fragments <br/> Berisi komponen - komponen organisms yang merupakan gabungan dari beberapa atom dan/atau molekul (foldernya kita berinama `elements`), di mana beberapa elemen dasar digabungkan menjadi kesatuan yang lebih kompleks. Contoh dari komponen - komponen ini adalah FormLogin.jsx dan FormRegister.jsx.
+- layouts <br/> berisi komponen-komponen organisme, yang menggabungkan elemen-elemen molekul dan/atau atoms untuk membentuk tata letak yang lebih besar dan berdiri sendiri. Salah satu contohnya adalah AuthLayouts.jsx.
+- templates<br/> Struktur tata letak yang lebih tinggi, menggabungkan komponen organisms (`fragments`) untuk menciptakan kerangka visual yang konsisten dan dapat reusable di seluruh proyek. AuthLayouts.jsx di sini adalah contoh dari komponen yang menggabungkan beberapa komponen organisms (`fragments`) untuk membentuk tampilan halaman yang lebih lengkap.
+- pages <br/> Berisi halaman-halaman aktual yang menggunakan komponen-komponen yang telah diatur dalam struktur sebelumnya. Contoh dari ini adalah Login.jsx dan Register.jsx.
 </details>
