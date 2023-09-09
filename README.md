@@ -233,8 +233,8 @@ Dengan menggunakan komponen `Link` dari `next/link` user dapat diarahkan dari lo
 
 Merupakan pendekatan dalam Next js yang memungkinkan kita untuk melakukan navigasi dari satu halaman ke halaman lain secara programatik, misalnya setelah mengeksekusi suatu tindakan atau dalam respons terhadap suatu peristiwa. Imperative routing dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing/linking-and-navigating#imperative-routing).
 
-<details >
-    <summary><a href="#atomic-design">Arti programatik </a></summary>
+<details>
+    <summary>Arti programatik</summary>
     Mengendalikan atau menjalankan suatu tindakan atau operasi berdasarkan logika atau instruksi dari kode program, bukan secara langsung melalui interaksi pengguna.
 </details>
 
@@ -297,3 +297,42 @@ export default About;
 [source code](https://github.com/argianardi/sinauNextJs/blob/routes/src/pages/about/index.tsx)
 
 Sehingga ketika user masuk ke halaman about dalam keadaan belum login maka user akan langsung di-direct ke halaman login.
+
+## Kumpulan Fitur
+
+### Conditional Rendering Sebuah Component di Page Tertentu
+
+Kita bisa membuat conditional rendering untuk membuat sebuah komponen hanya akan tampil di page tertentu saja. Misalnya setelah kita membuat komponen `Layout` yang membuat semua page akan secara otomatis memuat komponen `Navbar`, kita ingin membuat komponen `Navbar` tersebut hanya akan dirender/ditampilkan di semua halaman kecuali di halaman `Login` dan `Register`. Kita bisa melakukannya menggunakan `useRouter` dari Next js, tepatnya di key `pathname`. Kita bisa memanfaatkan query parameters yang ada di dalamnya sebagai trigger. Berikut contoh penggunaannya di coding:
+
+```
+import Navbar from '@/components/fragments/Header';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+type AppShellProps = {
+  children: React.ReactNode;
+};
+
+const AppShell = ({ children }: AppShellProps) => {
+  const { pathname } = useRouter();
+  const disabledNavbar = ['/auth/login', '/auth/register'];
+
+  return (
+    <main>
+    //----------------------------------------------------------------------
+      {!disabledNavbar.includes(pathname) && <Navbar />}
+    //----------------------------------------------------------------------
+      {children}
+    </main>
+  );
+};
+
+export default AppShell;
+```
+
+[sorce code](https://github.com/argianardi/sinauNextJs/blob/features/src/components/layouts/AppShell/index.tsx)
+
+<details open>
+    <summary>Penjelasan code:</summary>
+    Pada code conditional rendering diatas akan diperiksa apakah `pathname` saat ini sama atau tidak dengan path yang ada dalam array `disabledNavbar`. Jika tidak sama, maka Navbar akan ditampilkan di dalam page saat ini. Ini digunakan untuk mengendalikan apakah Navbar akan muncul atau tidak berdasarkan path saat ini.
+</details>
