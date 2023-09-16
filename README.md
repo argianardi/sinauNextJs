@@ -35,6 +35,15 @@
          <li><a href="#sass-syntactically-awesome-style-sheets">SASS</a></li>
        </ul>
   </details>
+- <details open>
+       <summary><a href="#custom-error-page">Custom Error Page</a></summary>
+       <ul>
+         <li><a href="#buat-error-page">Buat Error Page</a></li>
+         <li><a href="#menangkap-pathname-error-page">Menangkap Pathname Error Page</a></li>
+         <li><a href="#menangkap-aspath-error-page">Menangkap asPath Error Page</a></li>
+         <li><a href="#problem-dalam-penggunaan-aspath">Problem Dalam Penggunaan asPath</a></li>
+       </ul>
+  </details>
 
 ## Atomic Design
 
@@ -506,7 +515,7 @@ Berikut contoh penggunaannya di coding:
   export default MyComponent;
   ```
 
-## Error Page
+## Custom Error Page
 
 Error page adalah halaman khusus yang ditampilkan ketika terjadi kesalahan, yaitu ketika user mengakses halaman dengan path yang tidak tersedia di dalam routing di aplikasi web kita. Berikut contoh penggunaannya di coding:
 
