@@ -35,6 +35,15 @@
          <li><a href="#sass-syntactically-awesome-style-sheets">SASS</a></li>
        </ul>
   </details>
+- <details open>
+       <summary><a href="#custom-error-page">Custom Error Page</a></summary>
+       <ul>
+         <li><a href="#buat-error-page">Buat Error Page</a></li>
+         <li><a href="#menangkap-pathname-error-page">Menangkap Pathname Error Page</a></li>
+         <li><a href="#menangkap-aspath-error-page">Menangkap asPath Error Page</a></li>
+         <li><a href="#problem-dalam-penggunaan-aspath">Problem Dalam Penggunaan asPath</a></li>
+       </ul>
+  </details>
 
 ## Atomic Design
 
@@ -506,11 +515,239 @@ Berikut contoh penggunaannya di coding:
   export default MyComponent;
   ```
 
+## Custom Error Page
+
+Error page adalah halaman khusus yang ditampilkan ketika terjadi kesalahan, yaitu ketika user mengakses halaman dengan path yang tidak tersedia di dalam routing di aplikasi web kita. Berikut contoh penggunaannya di coding:
+
+### Buat Error Page
+
+- Buat file Error Page <br/>
+  Buat file error page di dalam direktori pages dengan nama yang sesuai, Misalnya, 404.jsx atau 404.tsx. Berikut skema struktur foldernya:
+
+  ```
+  my-nextjs-app/
+  |-- components/
+  |   |-- ...
+  |-- pages/
+  |   |-- index.tsx
+  |   |-- 404.tsx (Halaman Error 404 Kustom)
+  |-- styles/
+  |   |-- ...
+  |-- .babelrc
+  |-- package.json
+  |-- next.config.js
+  |-- ...
+  ```
+
+  Berikut contoh penggunaannya dicoding:
+
+  ```
+    import React, { useEffect, useState } from 'react';
+  import styles from '@/styles/404.module.scss';
+  import { useRouter } from 'next/router';
+
+  const Custom404 = () => {
+    const { asPath } = useRouter();
+    const cleanAsPath = asPath.startsWith('/') ? asPath.slice(1) : asPath;
+    console.log({ cleanAsPath });
+
+    const [asPathclientRendered, setAsPathclientRendered] = useState('');
+
+    useEffect(() => {
+      setAsPathclientRendered(cleanAsPath);
+    }, [asPath]);
+
+    return (
+      <div className={styles.error}>
+        <img src="/404.png" alt="404" className={styles.error__image} />
+        <p>
+          Halaman <span className={styles.pageText}> {asPathclientRendered}</span>{' '}
+          tidak ditemukan
+        </p>
+      </div>
+    );
+  };
+
+  export default Custom404;
+  ```
+
+  [Source Code](https://github.com/argianardi/sinauNextJs/blob/errorPage/src/pages/404.tsx)
+
+### Menangkap Pathname Error Page
+
+Pathname adalah bagian dari URL yang mengacu pada jalur atau rute aktual dari halaman yang sedang dibuka. Singkatnya pathname ini akan mengambil path berdasarkan nama file di dalam folder pages di aplikasi next js kita. Sebagai contoh, misalnya kita akses URL dengan Pathname di error page yang kita buat filenya dengan nama `404.tsx`, berikut skema struktur filenya:
+
+```
+  my-nextjs-app/
+  |-- ...
+  |-- pages/
+  |   |-- product.tsx
+  |   |-- 404.tsx
+  |-- ...
+```
+
+Kita coba akses URL `https://www.base-domain.com/best-product`, maka kita akan dapatkan value pathname `'/404'`
+
+Contoh pengaplikasian Pathname di error page dapat dimanfaatkan untuk mencegah rendering component `Navbar` di error page. Kita bisa atur itu di component `Layout`. Berikut contoh penerapannya di coding:
+
+```
+import Navbar from '@/components/fragments/Header';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+type AppShellProps = {
+  children: React.ReactNode;
+};
+
+const AppShell = ({ children }: AppShellProps) => {
+  //-------------------------------------------------------------------
+  const { pathname } = useRouter();
+  const disabledNavbar = ['/auth/login', '/auth/register', '/404'];
+  //-------------------------------------------------------------------
+
+  return (
+    <main>
+      {!disabledNavbar.includes(pathname) && <Navbar />}
+      {children}
+    </main>
+  );
+};
+
+export default AppShell;
+```
+
+[Source Code](https://github.com/argianardi/sinauNextJs/blob/errorPage/src/components/layouts/AppShell/index.tsx)
+
+### Menangkap asPath Error Page
+
+asPath adalah keseluruhan URL lengkap dari halaman yang sedang ditampilkan, termasuk domain dan query string (jika ada). Sederhananya `asPath` ini akan menangkap seluruh url (kecuali base domain) yang ada di search bar browser yang telah diakses untuk mendapatkan page yang diinginkan. Sebagai contoh, misalnya kita akses URL dengan `asPath` di error page yang kita buat filenya dengan nama `404.tsx`, berikut skema struktur filenya:
+
+```
+  my-nextjs-app/
+  |-- ...
+  |-- pages/
+  |   |-- product.tsx
+  |   |-- 404.tsx
+  |-- ...
+```
+
+Ketika kita coba akses URL `https://www.base-domain.com/best-product`, maka kita akan dapatkan value asPath `'/404'`.
+
+Pemanfaatan asPath di error page dapat diaplikasikan untuk menangkap lokasi page yang dituju user (di mana page tersebut tidak terdaftar di dalam daftar route di aplikasi kita) sebagai keterangan tambahan di error page agar lebih informatif untuk user. Berikut contoh penggunaannya di coding:
+
+```
+import React, { useEffect, useState } from 'react';
+import styles from '@/styles/404.module.scss';
+import { useRouter } from 'next/router';
+
+const Custom404 = () => {
+  const { asPath } = useRouter();
+  const cleanAsPath = asPath.startsWith('/') ? asPath.slice(1) : asPath;
+  console.log({ cleanAsPath });
+
+  const [asPathclientRendered, setAsPathclientRendered] = useState('');
+
+  useEffect(() => {
+    setAsPathclientRendered(cleanAsPath);
+  }, [asPath]);
+
+  return (
+    <div className={styles.error}>
+      <img src="/404.png" alt="404" className={styles.error__image} />
+      <p>
+        Halaman <span className={styles.pageText}> {asPathclientRendered}</span>{' '}
+        tidak ditemukan
+      </p>
+    </div>
+  );
+};
+
+export default Custom404;
+```
+
+[Source Code](https://github.com/argianardi/sinauNextJs/blob/errorPage/src/pages/404.tsx)
+
+### Problem Dalam Penggunaan asPath
+
+Dalam Penggunaan `asPath` kita harus menggunakan `useEffect`, jika kita langsung mengambil `asPath` tanpa melibatkan `useEffect` seperti ini:
+
+```
+import React from 'react';
+import styles from '@/styles/404.module.scss';
+import { useRouter } from 'next/router';
+
+const Custom404 = () => {
+  const router = useRouter();
+  const { asPath } = router;
+
+  return (
+    <div className={styles.error}>
+      <img src="/404.png" alt="404" className={styles.error__image} />
+       <div>{asPath} </div>
+      {asPath}
+    </div>
+  );
+};
+
+export default Custom404;
+```
+
+Jika kita langsung mengambil dan menggunakan `asPath` tanpa `useEffect` seperti code di atas kita akan mengalami error yang terkait dengan Server-side Rendering (SSR) atau Hydration. Pesan ini muncul ketika ada perbedaan antara teks konten yang dihasilkan oleh server saat merender halaman pertama kali dan teks konten yang dihasilkan oleh client (browser) saat merender halaman selanjutnya. Misalnya kita coba akses page yang tidak terdaftar dalam routing aplikasi web kita dengan path `https://basedomain.com/best-product` maka akan muncul message erronya seperti ini:
+
+- Error Message <br/>
+  "Text content does not match server-rendered HTML", Ini mengindikasikan bahwa teks konten yang dihasilkan oleh server tidak cocok dengan teks konten yang dihasilkan oleh klien.
+- Warning Message <br/>
+  "Warning: Text content did not match. Server: "/404" Client: "/best-product"", Ini memberikan informasi lebih lanjut tentang perbedaan yang terdeteksi. Misalnya, dalam contoh ini teks konten yang dihasilkan oleh server adalah "/404" sedangkan teks konten yang dihasilkan oleh klien adalah "/best-product".
+  `/404` dihasilkan dari nama file dalam aplikasi web kita, sedangkan `/best-product` dihasilkan dari path `https://basedomain.com/best-product` yang kita akses tadi.
+
+Kedua error message di atas mengacu pada konsep hydrasi dalam SSR. Ketika halaman SSR pertama kali dimuat oleh server, Next js akan menciptakan tampilan HTML awal dan mengirimkannya ke klien. Kemudian, ketika halaman dimuat ulang oleh klien, Next.js akan mencoba menghidrasi (mengembalikan keadaan) komponen yang ada pada tampilan tersebut.
+
+Perbedaan teks konten ini mungkin disebabkan oleh perbedaan dalam logika render atau perbedaan dalam data yang digunakan oleh server dan klien. Penting untuk memeriksa perbedaan tersebut dan memastikan bahwa teks konten yang dihasilkan oleh server dan klien sesuai. Ini bisa melibatkan pengecekan logika render pada sisi server dan klien, serta pemastian bahwa data yang digunakan konsisten.
+
+Lebih lanjut, pesan kesalahan ini seringkali tidak menyebabkan masalah yang serius dalam pengembangan, namun perlu diwaspadai untuk memastikan kualitas render halaman yang konsisten antara server dan klien. Jika pesan kesalahan ini mengacu pada perbedaan yang tidak relevan atau yang tidak memengaruhi pengalaman pengguna, kita bisa mengabaikannya.
+
+Untuk mengatasi error tersebut kita dapat menggunakan pendekatan client-side rendering (CSR) untuk menampilkan bagian dari halaman yang bergantung pada data yang hanya tersedia di sisi klien.
+
+Dalam kasus kita, asPath adalah informasi yang bergantung pada routing di sisi klien, dan itu bukan masalah yang serius jika terdapat perbedaan dengan konten yang dihasilkan di sisi server.
+kita dapat melakukan CSR untuk menampilkan asPath dengan menggunakan Hook useEffect. Tempatkan tampilan yang bergantung pada data klien di dalam useEffect. Ini akan memastikan bahwa tampilan ini hanya dimuat setelah komponen di-render di sisi klien. Berikut Contoh penggunaannya di coding:
+
+```
+import React, { useEffect, useState } from 'react';
+import styles from '@/styles/404.module.scss';
+import { useRouter } from 'next/router';
+
+const Custom404 = () => {
+  const { asPath } = useRouter();
+  const cleanAsPath = asPath.startsWith('/') ? asPath.slice(1) : asPath;
+  console.log({ cleanAsPath });
+
+  const [asPathclientRendered, setAsPathclientRendered] = useState('');
+
+  useEffect(() => {
+    setAsPathclientRendered(cleanAsPath);
+  }, [asPath]);
+
+  return (
+    <div className={styles.error}>
+      <img src="/404.png" alt="404" className={styles.error__image} />
+      <p>
+        Halaman <span className={styles.pageText}> {asPathclientRendered}</span>{' '}
+        tidak ditemukan
+      </p>
+    </div>
+  );
+};
+
+export default Custom404;
+```
+
+[Source Code](https://github.com/argianardi/sinauNextJs/blob/errorPage/src/pages/404.tsx)
+
 ## Kumpulan Fitur
 
 ### Conditional Rendering Sebuah Component di Page Tertentu
 
-Kita bisa membuat conditional rendering untuk membuat sebuah komponen hanya akan tampil di page tertentu saja. Misalnya setelah kita membuat komponen `Layout` yang membuat semua page akan secara otomatis memuat komponen `Navbar`, kita ingin membuat komponen `Navbar` tersebut hanya akan dirender/ditampilkan di semua halaman kecuali di halaman `Login` dan `Register`. Kita bisa melakukannya menggunakan `useRouter` dari Next js, tepatnya di key `pathname`. Kita bisa memanfaatkan query parameters yang ada di dalamnya sebagai trigger. Berikut contoh penggunaannya di coding:
+Kita bisa membuat conditional rendering untuk membuat sebuah komponen hanya akan tampil di page tertentu saja. Misalnya setelah kita membuat komponen `Layout` yang membuat semua page akan secara otomatis memuat komponen `Navbar`, tapi kita ingin membuat komponen `Navbar` tersebut hanya akan dirender/ditampilkan di semua halaman kecuali di halaman `Login` dan `Register`. Kita bisa melakukannya dengan memanfaatkan `useRouter` dari Next js, tepatnya di key `pathname`. Kita bisa memanfaatkan query parameters yang ada di dalamnya sebagai trigger. Berikut contoh penggunaannya di coding:
 
 ```
 import Navbar from '@/components/fragments/Header';
