@@ -743,6 +743,96 @@ export default Custom404;
 
 [Source Code](https://github.com/argianardi/sinauNextJs/blob/errorPage/src/pages/404.tsx)
 
+## API Routes
+
+API Routes adalah salah satu fitur yang powerfull di Next.js yang memungkinkan kita untuk membuat endpoint API langsung dari project Next js kita. API routes ini memungkinkan kita untuk mengekspos fungsi-fungsi yang dapat diakses melalui HTTP, seperti pengambilan data dari database, pemrosesan data, atau operasi lainnya. API Routes biasanya digunakan untuk menyediakan data untuk halaman web kita atau digunakan sebagai back-end untuk aplikasi client.
+
+### Pengaplikasian API Routes
+
+Berikut contoh penggunaannya di coding:
+
+- Buat Folder pages/api <br/>
+  Pertama kita harus membuat folder dengan nama `api` di dalam folder pages di project Next.js kita. Semua file yang kita letakkan di dalam folder `api` ini akan menjadi API Routes.
+- Buat File API Route <br/>
+  Buat file JavaScript atau TypeScript di dalam folder `pages/api`. Nama file ini akan menjadi bagian dari URL API kita. Misalnya, jika kita membuat file users.js, API akan dapat diakses melalui `base-domain/api/users`.
+- Buat Logic API <br/>
+  Di dalam file API Route tersebut, kita dapat menyediakan logika untuk API kita. Kita dapat mengimpor modul, mengambil data dari database, melakukan operasi tertentu, dan kemudian mengembalikan respons dalam format JSON. Berikut contoh penggunaannya di coding:
+
+  ```
+  import { NextApiRequest, NextApiResponse } from 'next';
+
+  // Definisikan tipe data yang akan digunakan untuk respon API (untuk typescript)
+  type Data = {
+    status: boolean;
+    statusCode: number;
+    data: {
+      id: number;
+      name: string;
+      price: number;
+      size: string;
+    }[];
+  };
+
+  // Export sebuah fungsi bernama handler yang akan menangani API request
+  export default function handler(
+    req: NextApiRequest,
+    res: NextApiResponse<Data>
+  ) {
+    // Data produk yang akan dikirim sebagai respon API
+    const data = [
+      {
+        id: 101,
+        name: 'Sepatu Olahraga Nike Air Zoom Pegasus 38',
+        price: 120.0,
+        size: '42',
+      },
+      {
+        id: 202,
+        name: 'Kamera DSLR Canon EOS 5D Mark IV',
+        price: 2499.99,
+        size: 'N/A',
+      },
+    ];
+
+    // Mengirim respon JSON dengan status 200 (OK) dan data produk
+    res.status(200).json({ status: true, statusCode: 200, data });
+  }
+  ```
+
+  - `Export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) { ... }` <br/>
+    Ini adalah eksport dari fungsi yang akan menangani API request. Fungsi handler menerima dua parameter:
+    - req (NextApiRequest): Objek yang mewakili HTTP request yang masuk.
+    - res (NextApiResponse<Data>): Objek yang digunakan untuk mengirim respon HTTP kembali ke client dengan tipe data Data yang telah didefinisikan sebelumnya.
+  - Di dalam fungsi handler, ada deklarasi variabel `data` yang berisi array of objek produk yang akan digunakan sebagai data respon API.
+  - `res.status(200).json({ status: true, statusCode: 200, data });` <br/>
+    Ini adalah code yang mengirim respon JSON ke client:
+    - Fungsi status(200) digunakan untuk mengatur kode status HTTP menjadi 200 (OK)
+    - Kemudian json({ ... }) digunakan untuk mengirim data dalam format JSON sebagai respon. Data yang dikirimkan termasuk status, code status, dan array produk yang sudah didefinisikan sebelumnya.
+
+- Lakukan integrasi API di Halaman/komponen kita (sisi front end) <br/>
+  Kita dapat melakukan integrasi API yang telah kita buat di halaman Next.js kita, dengan menggunakan fetch atau library HTTP lainnya.
+
+Berikut skema struktur folder untuk API routes di next js
+
+```
+project-root/
+  ├─ pages/
+  │   ├─ api/
+  │   │   ├─ users.js
+  │   │   ├─ products.js
+  │   │   ├─ ...
+  ├─ ...
+```
+
+### Kapan Menggunakan API Routes
+
+Kita dapat menggunakan API Routes di Next.js dalam berbagai situasi, termasuk:
+
+- Mengambil data dari database dan menyediakannya ke halaman web Kita.
+- Menyediakan endpoint untuk aplikasi klien yang memerlukan data dinamis.
+- Melakukan operasi otentikasi atau otorisasi sebelum memberikan respons.
+- Menjalankan tugas-tugas terjadwal (cron jobs) di server.
+
 ## Kumpulan Fitur
 
 ### Conditional Rendering Sebuah Component di Page Tertentu
