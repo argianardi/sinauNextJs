@@ -9,7 +9,6 @@ type AppShellProps = {
 const AppShell = ({ children }: AppShellProps) => {
   const { pathname } = useRouter();
   const disabledNavbar = ['/auth/login', '/auth/register', '/404'];
-  console.log({ pathname });
 
   return (
     <main>
