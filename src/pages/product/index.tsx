@@ -1,47 +1,77 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import styles from '@/styles/product.module.scss';
+import useSWR from 'swr';
+import { fetcher } from '@/utils/swr/fetcher';
 
-// Definisikan tipe data untuk produk (untuk typescript)
 type productType = {
-  id: number;
+  category: string;
+  id: string;
+  image: string;
   name: string;
   price: number;
-  size: string;
 };
 
 const Product = () => {
-  // Deklarasikan state "products" menggunakan useState
   const [products, setProducts] = useState([]);
 
-  // Gunakan useEffect untuk mengambil data produk saat komponen dimuat
-  useEffect(() => {
-    // Panggil fungsi getProducts saat komponen/halaman pertama kali diload
-    getProducts();
-  }, []);
+  // useEffect(() => {
+  //   getProducts();
+  // }, []);
 
-  // Fungsi async untuk mengambil data produk dari API menggunakan Axios
-  const getProducts = async () => {
-    try {
-      // Kirim GET Request ke endpoint 'api/products'
-      const response = await axios.get('api/products');
-      console.log({ response });
-      setProducts(response.data.data);
-      // Atur state "products" dengan data produk dari api response
-    } catch (error) {
-      // error handling
-      console.log('terjadi kesalahan: ', error);
-    }
-  };
+  // const getProducts = async () => {
+  //   try {
+  //     const response = await axios.get('api/products');
+  //     // console.log(response.data.data);
+  //     setProducts(response.data.data);
+  //   } catch (error) {
+  //     console.log('terjadi kesalahan: ', error);
+  //   }
+  // };
+
+  const { data, error, isLoading } = useSWR('api/products', fetcher);
+
+  console.log({ data });
+  console.log({ error });
+  console.log({ isLoading });
 
   return (
-    <div>
-      <h1>Product Page</h1>
-      <ul style={{ marginLeft: '50px', marginTop: '20px' }}>
-        {/* Buat list rendering untuk menampilkan data produk ke komponen Product */}
-        {products.map((product: productType) => (
-          <li key={product.id}>{product.name}</li>
-        ))}
-      </ul>
+    <div className={styles.product}>
+      <h1 className={styles.product__title}>Product Page</h1>
+      <div className={styles.product__content}>
+        {isLoading ? (
+          []
+        ) : data.data.length > 0 ? (
+          <>
+            {data.data?.map((product: productType) => (
+              <div key={product.id} className={styles.product__content__item}>
+                <div className={styles.product__content__item__image}>
+                  <img src={product.image} alt={product.name} />
+                </div>
+                <h4 className={styles.product__content__item__name}>
+                  {product.name}
+                </h4>
+                <p className={styles.product__content__item__category}>
+                  {product.category}
+                </p>
+                <p className={styles.product__content__item__price}>
+                  {product.price.toLocaleString('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                  })}
+                </p>
+              </div>
+            ))}
+          </>
+        ) : (
+          <div className={styles.product__content__skeleton}>
+            <div className={styles.product__content__skeleton__image} />
+            <div className={styles.product__content__skeleton__name} />
+            <div className={styles.product__content__skeleton__category} />
+            <div className={styles.product__content__skeleton__price} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
