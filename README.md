@@ -833,6 +833,10 @@ Kita dapat menggunakan API Routes di Next.js dalam berbagai situasi, termasuk:
 - Melakukan operasi otentikasi atau otorisasi sebelum memberikan respons.
 - Menjalankan tugas-tugas terjadwal (cron jobs) di server.
 
+## Client Side Rendering
+
+Pengambilan data eksternal dan transformasi code menjadi representasi HTML dari sebuah UI yang terjadi di client (client-side). Pada client side rendering biasanya browser akan menerima struktur HTML kosong serti tag html, body dan div kemudian server akan mengirimkan serangkaian instruksi javascript untuk mengkonstrak atau membangun sebuah UI selanjutnya akan dilakukan rendering di sisi client. Ini berarti semua proses rendering tersebut dilakukan di device user (client-side).
+
 ## Kumpulan Fitur
 
 ### Conditional Rendering Sebuah Component di Page Tertentu
