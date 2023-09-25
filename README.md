@@ -44,6 +44,8 @@
          <li><a href="#problem-dalam-penggunaan-aspath">Problem Dalam Penggunaan asPath</a></li>
        </ul>
   </details>
+- <a href="#client-side-rendering">Client Side Rendering (CSR)</a>
+- <a href="#server-side-rendering">Server Side Rendering (CSR)</a>
 
 ## Atomic Design
 
@@ -836,6 +838,171 @@ Kita dapat menggunakan API Routes di Next.js dalam berbagai situasi, termasuk:
 ## Client Side Rendering
 
 Pengambilan data eksternal dan transformasi code menjadi representasi HTML dari sebuah UI yang terjadi di client (client-side). Pada client side rendering biasanya browser akan menerima struktur HTML kosong serti tag html, body dan div kemudian server akan mengirimkan serangkaian instruksi javascript untuk mengkonstrak atau membangun sebuah UI selanjutnya akan dilakukan rendering di sisi client. Ini berarti semua proses rendering tersebut dilakukan di device user (client-side).
+
+```
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import styles from '@/styles/product.module.scss';
+import useSWR from 'swr';
+import { fetcher } from '@/utils/swr/fetcher';
+
+type productType = {
+  category: string;
+  id: string;
+  image: string;
+  name: string;
+  price: number;
+};
+
+const ProductPage = () => {
+  // useEffect(() => {
+  //   getProducts();
+  // }, []);
+
+  // const getProducts = async () => {
+  //   try {
+  //     const response = await axios.get('api/products');
+  //     // console.log(response.data.data);
+  //     setProducts(response.data.data);
+  //   } catch (error) {
+  //     console.log('terjadi kesalahan: ', error);
+  //   }
+  // };
+
+  const { data, error, isLoading } = useSWR('/api/products', fetcher);
+
+  return (
+    <div className={styles.product}>
+      <h1 className={styles.product__title}>Product Page</h1>
+      <div className={styles.product__content}>
+        {isLoading ? (
+          <div className={styles.product__content__skeleton}>
+            <div className={styles.product__content__skeleton__image} />
+            <div className={styles.product__content__skeleton__name} />
+            <div className={styles.product__content__skeleton__category} />
+            <div className={styles.product__content__skeleton__price} />
+          </div>
+        ) : (
+          <>
+            {data.data?.map((product: productType) => (
+              <div key={product.id} className={styles.product__content__item}>
+                <div className={styles.product__content__item__image}>
+                  <img src={product.image} alt={product.name} />
+                </div>
+                <h4 className={styles.product__content__item__name}>
+                  {product.name}
+                </h4>
+                <p className={styles.product__content__item__category}>
+                  {product.category}
+                </p>
+                <p className={styles.product__content__item__price}>
+                  {product.price.toLocaleString('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                  })}
+                </p>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ProductPage;
+```
+
+[Source Code](https://github.com/argianardi/sinauNextJs/blob/server-side-rendering/src/pages/product/csr.tsx)
+
+## Server Side Rendering
+
+- Pengambilan data eksternal dan transformasi kode menjadi representasi HTML dari sebuah UI terjadi sebelum hasilnya dikirim ke client.
+- HTML akan di-generate kemudian HTML, data, dan javascript dikirim ke client. Proses ini dilakukan saat run time.
+- HTML digunkaan untuk menampilkan halaman tapi belum interaktif, kemudian react akan melakukan proses hydration dengan menggunakan data dan javascript untuk membuat komponen menjadi interaktif.
+
+Berikut contoh penggunaan server side rendering di coding:
+
+```
+import React from 'react';
+import styles from '@/styles/product.module.scss';
+import axios from 'axios';
+
+type productType = {
+  category: string;
+  id: string;
+  image: string;
+  name: string;
+  price: number;
+};
+
+const ProductPage = ({ products }: { products: productType[] }) => {
+  return (
+    <div className={styles.product}>
+      <h1 className={styles.product__title}>Product Page</h1>
+      <div className={styles.product__content}>
+        {products.length > 0 ? (
+          <>
+            {/* List product */}
+            {products?.map((product: productType) => (
+              <div key={product.id} className={styles.product__content__item}>
+                <div className={styles.product__content__item__image}>
+                  <img src={product.image} alt={product.name} />
+                </div>
+                <h4 className={styles.product__content__item__name}>
+                  {product.name}
+                </h4>
+                <p className={styles.product__content__item__category}>
+                  {product.category}
+                </p>
+                <p className={styles.product__content__item__price}>
+                  {product.price.toLocaleString('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                  })}
+                </p>
+              </div>
+            ))}
+          </>
+        ) : (
+          // Sekeleton
+          <div className={styles.product__content__skeleton}>
+            <div className={styles.product__content__skeleton__image} />
+            <div className={styles.product__content__skeleton__name} />
+            <div className={styles.product__content__skeleton__category} />
+            <div className={styles.product__content__skeleton__price} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export async function getServerSideProps() {
+  try {
+    const response = await axios.get('http://localhost:3000/api/products');
+
+    return {
+      props: {
+        products: response.data.data,
+        apiError: null,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        data: null,
+      },
+    };
+  }
+}
+
+export default ProductPage;
+```
+
+[Source Code](https://github.com/argianardi/sinauNextJs/blob/server-side-rendering/src/pages/product/ssr.tsx)
+
+Di dalam server side rendering ini bagian skeleton di dalam komponen productPage tersebut tidak akan berguna karena di SSR tidak memerlukan proses loading saat melakukan fetching API. Semua data eksternal dari API akan langsung diberikan secara bersamaan atau satu paket dengan komponen HTML yang kita gunakan.
 
 ## Kumpulan Fitur
 

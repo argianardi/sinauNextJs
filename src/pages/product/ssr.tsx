@@ -1,8 +1,6 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from '@/styles/product.module.scss';
-import useSWR from 'swr';
-import { fetcher } from '@/utils/swr/fetcher';
+import axios from 'axios';
 
 type productType = {
   category: string;
@@ -12,38 +10,15 @@ type productType = {
   price: number;
 };
 
-const Product = () => {
-  const [products, setProducts] = useState([]);
-
-  // useEffect(() => {
-  //   getProducts();
-  // }, []);
-
-  // const getProducts = async () => {
-  //   try {
-  //     const response = await axios.get('api/products');
-  //     // console.log(response.data.data);
-  //     setProducts(response.data.data);
-  //   } catch (error) {
-  //     console.log('terjadi kesalahan: ', error);
-  //   }
-  // };
-
-  const { data, error, isLoading } = useSWR('api/products', fetcher);
-
-  console.log({ data });
-  console.log({ error });
-  console.log({ isLoading });
-
+const ProductPage = ({ products }: { products: productType[] }) => {
   return (
     <div className={styles.product}>
       <h1 className={styles.product__title}>Product Page</h1>
       <div className={styles.product__content}>
-        {isLoading ? (
-          []
-        ) : data.data.length > 0 ? (
+        {products.length > 0 ? (
           <>
-            {data.data?.map((product: productType) => (
+            {/* List product */}
+            {products?.map((product: productType) => (
               <div key={product.id} className={styles.product__content__item}>
                 <div className={styles.product__content__item__image}>
                   <img src={product.image} alt={product.name} />
@@ -64,6 +39,7 @@ const Product = () => {
             ))}
           </>
         ) : (
+          // Sekeleton
           <div className={styles.product__content__skeleton}>
             <div className={styles.product__content__skeleton__image} />
             <div className={styles.product__content__skeleton__name} />
@@ -76,4 +52,23 @@ const Product = () => {
   );
 };
 
-export default Product;
+export async function getServerSideProps() {
+  try {
+    const response = await axios.get('http://localhost:3000/api/products');
+
+    return {
+      props: {
+        products: response.data.data,
+        apiError: null,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        data: null,
+      },
+    };
+  }
+}
+
+export default ProductPage;
