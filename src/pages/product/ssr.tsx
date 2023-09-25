@@ -52,6 +52,8 @@ const ProductPage = ({ products }: { products: productType[] }) => {
   );
 };
 
+export default ProductPage;
+
 export async function getServerSideProps() {
   try {
     const response = await axios.get('http://localhost:3000/api/products');
@@ -70,5 +72,3 @@ export async function getServerSideProps() {
     };
   }
 }
-
-export default ProductPage;
