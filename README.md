@@ -45,7 +45,7 @@
        </ul>
   </details>
 - <a href="#client-side-rendering">Client Side Rendering (CSR)</a>
-- <a href="#server-side-rendering">Server Side Rendering (CSR)</a>
+- <a href="#server-side-rendering">Server Side Rendering (SSR)</a>
 
 ## Atomic Design
 
@@ -1003,6 +1003,89 @@ export async function getServerSideProps() {
 [Source Code](https://github.com/argianardi/sinauNextJs/blob/server-side-rendering/src/pages/product/ssr.tsx)
 
 Di dalam server side rendering ini bagian skeleton di dalam komponen productPage tersebut tidak akan berguna karena di SSR tidak memerlukan proses loading saat melakukan fetching API. Semua data eksternal dari API akan langsung diberikan secara bersamaan atau satu paket dengan komponen HTML yang kita gunakan.
+
+## Static Site Generation
+
+Static Site Generation (SSG) adalah salah satu teknik utama dalam Next.js yang memungkinkan kita untuk menghasilkan halaman web yang sangat efisien dan cepat dengan merender konten menjadi HTML statis selama build time. pada SSG ini, HTML akan di-generate di server namun hanya di-generate sekali saat build time. Sehingga content yang ditampilkan bersifat statis. Berikut contoh penggunaannya di coding:
+
+```
+import React from 'react';
+import styles from '@/styles/product.module.scss';
+import axios from 'axios';
+
+type productType = {
+  category: string;
+  id: string;
+  image: string;
+  name: string;
+  price: number;
+};
+
+const ProductPage = ({ products }: { products: productType[] }) => {
+  return (
+    <div className={styles.product}>
+      <h1 className={styles.product__title}>Product Page</h1>
+      <div className={styles.product__content}>
+        {products.length > 0 ? (
+          <>
+            {/* List product */}
+            {products?.map((product: productType) => (
+              <div key={product.id} className={styles.product__content__item}>
+                <div className={styles.product__content__item__image}>
+                  <img src={product.image} alt={product.name} />
+                </div>
+                <h4 className={styles.product__content__item__name}>
+                  {product.name}
+                </h4>
+                <p className={styles.product__content__item__category}>
+                  {product.category}
+                </p>
+                <p className={styles.product__content__item__price}>
+                  {product.price.toLocaleString('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                  })}
+                </p>
+              </div>
+            ))}
+          </>
+        ) : (
+          // Sekeleton
+          <div className={styles.product__content__skeleton}>
+            <div className={styles.product__content__skeleton__image} />
+            <div className={styles.product__content__skeleton__name} />
+            <div className={styles.product__content__skeleton__category} />
+            <div className={styles.product__content__skeleton__price} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ProductPage;
+
+export async function getStaticProps() {
+  try {
+    const response = await axios.get('http://localhost:3000/api/products');
+
+    return {
+      props: {
+        products: response.data.data,
+      },
+    };
+  } catch (error) {
+    console.error('Terjadi kesalahan dalam mengambil data produk:', error);
+    return {
+      props: {
+        products: [],
+      },
+    };
+  }
+}
+```
+
+[Source Code](https://github.com/argianardi/sinauNextJs/blob/staticSiteGeneration/src/pages/product/ssg.tsx)
 
 ## Kumpulan Fitur
 
