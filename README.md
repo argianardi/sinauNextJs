@@ -1006,7 +1006,7 @@ Di dalam server side rendering ini bagian skeleton di dalam komponen productPage
 
 ## Static Site Generation
 
-Static Site Generation (SSG) adalah salah satu teknik utama dalam Next.js yang memungkinkan kita untuk menghasilkan halaman web yang sangat efisien dan cepat dengan merender konten menjadi HTML statis selama build time. pada SSG ini, HTML akan di-generate di server namun hanya di-generate sekali saat build time. Sehingga content yang ditampilkan bersifat statis. Berikut contoh penggunaannya di coding:
+Static Site Generation (SSG) adalah salah satu teknik utama dalam Next.js yang memungkinkan kita untuk menghasilkan halaman web yang sangat efisien dan cepat dengan merender konten menjadi HTML statis selama build time. pada SSG ini, HTML akan di-generate di server namun hanya di-generate sekali saat build time. Sehingga content yang ditampilkan bersifat statis. Jadi ketika kita melakukan perubahan data di database maka data/content di website kita tidak langsung dirender/berubah, data/content tersebut akan berubah ketika kita melakukan build time (menjalankan perintah `npm run build`). Berikut contoh penggunaannya di coding:
 
 ```
 import React from 'react';
@@ -1087,6 +1087,74 @@ export async function getStaticProps() {
 
 [Source Code](https://github.com/argianardi/sinauNextJs/blob/staticSiteGeneration/src/pages/product/ssg.tsx)
 
+## Rendering Dynamic Routes
+
+### Dynamic API Routes
+
+Dynamic API routes adalah bagian dari aplikasi Next.js yang memungkinkan kita untuk mengatur cara kita meng-handle API request berdasarkan parameter yang diberikan. Ini sangat berguna ketika kita perlu menyajikan atau menerima data dari API berdasarkan nilai parameter tertentu. Misalnya, kita bisa mengambil data produk berdasarkan ID produk yang diberikan oleh user.
+
+#### Membuat Dynamic API Route
+
+Hal pertama langkah yang perlu dilakukan untuk membuat dynamic api route adalah membuat file dynamic api. Buat File Dynamic API di dalam folder api, buat file dengan format `[param].ts` di mana `[param]` adalah nama parameter yang ingin kita handle. Misalnya, jika kita ingin membuat API yang menerima parameter id, kita bisa membuat file dengan nama `[[...productId]].ts`. Berikut skema struktur file dan foldernya:
+
+```
+pages/
+|-- api/
+|   |-- [[...productId]].tsx
+|-- ...
+```
+
+#### Mengakses Parameter
+
+Di dalam direktori pages/api, kita memiliki file `[[...productId]].tsx`. Ini adalah dynamic API route yang akan menangani request dari rute dinamis. Ketika kita telah membuat dynamic API route, kita akan dapat mengakses nilai parameter dari URL. Berikut contoh penggunaannya di coding:
+
+```
+import { retrieveData, retrieveDataById } from '@/utils/db/service';
+
+import { query } from 'firebase/firestore';
+import { NextApiRequest, NextApiResponse } from 'next';
+
+// Definisikan tipe data yang akan digunakan untuk respon API (untuk typescript)
+type Data = {
+  status: boolean;
+  statusCode: number;
+  data: any;
+};
+
+// Export sebuah fungsi bernama handler yang akan menangani API request
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
+
+  console.log(req.query.productId); // if we access baseDomain/api/products/123 will be return ['products', '123']
+  console.log(req.query.productId![1]); // if access we access baseDomain/api/products/123 will be return 123
+
+  if (req.query.productId![1]) {
+    const data = await retrieveDataById('products', req.query.productId![1]);
+    res.status(200).json({ status: true, statusCode: 200, data });
+  } else {
+    // Data produk yang akan dikirim sebagai respon API
+    const data = await retrieveData('products');
+    // Mengirim respon JSON dengan status 200 (OK) dan data produk
+    res.status(200).json({ status: true, statusCode: 200, data });
+  }
+}
+```
+
+<details open>
+<summary>Penjelasan code:</summary>
+
+- Export Function Handler <br/>
+  Fungsi handler di-export dan digunakan untuk menangani permintaan API. Ini adalah inti dari dynamic API route. Fungsi ini menerima dua parameter: req (permintaan) dan res (respon).
+- Akses Parameter Dinamis <br/>
+  Pada code `console.log(req.query.productId![1])` digunakan untuk mengakses parameter dinamis dari URL. Dalam contoh ini parameter dinamis diperoleh dari `req.query.product![1]`, dengan code ini kita bisa mengambil parameter dinamis yang berada pada indeks ke-1 dari array productId. Misalnya kita coba akses menjalankan command `console.log(req.query.productId)` akan menghsilkan `
+[ 'products', '123' ]`. Dan jika kita mencoba `http://localhost:3000/api/products/123` di browser, kita akan mendapatkan `123` di terminal.
+- Pemeriksaan Parameter Dinamis <br/>
+Selanjutnya, ada blok if yang memeriksa apakah ada parameter dinamis yang diberikan dalam URL. Jika ada, kode akan menjalankan retrieveDataById untuk mengambil data berdasarkan ID (diperoleh dari req.query / query request yang diakses oleh user) yang diberikan dan mengirimkannya sebagai respon API dengan status 200.
+Conditional if tersebut memanfaatkan `req.query` yang valuenya di dapatkan dari paramater dinamis pada url yang diakses oleh user
+</details>
+
 ## Kumpulan Fitur
 
 ### Conditional Rendering Sebuah Component di Page Tertentu
@@ -1121,7 +1189,6 @@ export default AppShell;
 
 <details open>
 <summary>Penjelasan code:</summary>
-
 Pada code conditional rendering `{!disabledNavbar.includes(pathname) && <Navbar />}` akan diperiksa apakah `pathname` saat ini (page yang sedang di-render) sama atau tidak dengan path yang ada dalam array `disabledNavbar`. Jika tidak sama, maka Navbar akan ditampilkan di dalam page saat ini. Ini digunakan untuk mengendalikan apakah Navbar akan muncul atau tidak berdasarkan path saat ini.
 
 </details>
