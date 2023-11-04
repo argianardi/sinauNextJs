@@ -24,19 +24,28 @@ const DetailProduct = () => {
   return (
     <div>
       <h1>Detail Product</h1>
-      <div className={styles.productDetail}>
-        <div className={styles.productDetail__image}>
-          <img src={product?.image} alt={product?.name} />
+      {isLoading ? (
+        <div className={styles.product__content__skeleton}>
+          <div className={styles.product__content__skeleton__image} />
+          <div className={styles.product__content__skeleton__name} />
+          <div className={styles.product__content__skeleton__category} />
+          <div className={styles.product__content__skeleton__price} />
         </div>
-        <h4 className={styles.productDetail__name}>{product?.name}</h4>
-        <p className={styles.productDetail__category}>{product?.category}</p>
-        <p className={styles.productDetail__price}>
-          {product?.price?.toLocaleString('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-          })}
-        </p>
-      </div>
+      ) : (
+        <div className={styles.productDetail}>
+          <div className={styles.productDetail__image}>
+            <img src={product?.image} alt={product?.name} />
+          </div>
+          <h4 className={styles.productDetail__name}>{product?.name}</h4>
+          <p className={styles.productDetail__category}>{product?.category}</p>
+          <p className={styles.productDetail__price}>
+            {product?.price?.toLocaleString('id-ID', {
+              style: 'currency',
+              currency: 'IDR',
+            })}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
