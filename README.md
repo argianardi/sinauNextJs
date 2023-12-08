@@ -46,6 +46,15 @@
   </details>
 - <a href="#client-side-rendering">Client Side Rendering (CSR)</a>
 - <a href="#server-side-rendering">Server Side Rendering (SSR)</a>
+- <details open>
+       <summary><a href="#rendering-dynamic-routes">Rendering Dynamic Routes</a></summary>
+       <ul>
+         <li><a href="#dynamic-api-routes">Dynamic API Routes</a></li>
+         <li><a href="#membuat-dynamic-api-route">Membuat Dynamic API Route</a></li>
+         <li><a href="#mengakses-parameter">Mengakses Parameter</a></li>
+         <li><a href="#mengakses-dynamic-api-route-untuk-ui--front-end">Mengakses Dynamic API Route (Untuk UI / Front End)</a></li>
+       </ul>
+  </details>
 
 ## Atomic Design
 
@@ -1152,8 +1161,12 @@ export default async function handler(
 [ 'products', '123' ]`. Dan jika kita mencoba `http://localhost:3000/api/products/123` di browser, kita akan mendapatkan `123` di terminal.
 - Pemeriksaan Parameter Dinamis <br/>
 Selanjutnya, ada blok if yang memeriksa apakah ada parameter dinamis yang diberikan dalam URL. Jika ada, kode akan menjalankan retrieveDataById untuk mengambil data berdasarkan ID (diperoleh dari req.query / query request yang diakses oleh user) yang diberikan dan mengirimkannya sebagai respon API dengan status 200.
-Conditional if tersebut memanfaatkan `req.query` yang valuenya di dapatkan dari paramater dinamis pada url yang diakses oleh user
+Conditional if tersebut memanfaatkan `req.query` yang valuenya di dapatkan dari paramater dinamis pada url yang diakses oleh user tadi
 </details>
+
+### Mengakses Dynamic Api Route (Untuk UI / Front End)
+
+Setelah membuat dynamic API route, kita dapat untuk kebutuhan UI di sisi Front End. Dalam pengembangan aplikasi web, seringkali kita perlu menangani rute yang dinamis juga di sisi UI, di mana halaman berubah berdasarkan parameter tertentu dalam URL. Next.js menyediakan berbagai cara untuk merender halaman dinamis dengan mudah menggunakan Client-Side Rendering (CSR), Server-Side Rendering (SSR), dan Static Site Generation (SSG).
 
 ## Kumpulan Fitur
 
@@ -1192,3 +1205,5 @@ export default AppShell;
 Pada code conditional rendering `{!disabledNavbar.includes(pathname) && <Navbar />}` akan diperiksa apakah `pathname` saat ini (page yang sedang di-render) sama atau tidak dengan path yang ada dalam array `disabledNavbar`. Jika tidak sama, maka Navbar akan ditampilkan di dalam page saat ini. Ini digunakan untuk mengendalikan apakah Navbar akan muncul atau tidak berdasarkan path saat ini.
 
 </details>
+
+- get All data/get by id sebaiknya pakai SSR
