@@ -149,22 +149,26 @@ Sehingga jika user ingin mengakses page contact, dapat dilakukan menggunakan url
 
 ### Nested Routes
 
-Merupakan cara untuk mengatur halaman-halaman di dalam halaman lain. Ini membantu membuat struktur navigasi yang lebih dalam dan terorganisir. Nested routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts). Misalnya kita ingin membangun situs berita dengan struktur berikut:
+Merupakan cara untuk mengatur beberpa halaman yang diletakkan di halaman lain. Ini membantu membuat struktur navigasi yang lebih dalam dan terorganisir. Nested routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts). Misalnya kita ingin membangun situs artikel dengan struktur berikut:
 
 ```
 pages/
 |-- index.jsx (Beranda)
 |-- category/
-|   |   |-- index.jsx (Daftar berita dalam kategori)
-|   |   |-- news.jsx (Detail berita)
+|   |   |-- index.jsx (page category menampilkan daftar category artikel)
+|   |   |-- news.jsx (page news yaitu salah satu category yang ada di dalam page category, menampilkan daftar artikel yang dikategorikan sebagai news)
+|   |   |-- sports.jsx (page sports yaitu salah satu category yang ada di dalam page category, menampilkan daftar artikel yang dikategorikan sebagai sports)
 |-- ...
 ```
 
+[[source code](https://github.com/argianardi/sinauNextJs/tree/routes/src/pages)]
+
 URL yang dihasilkan dari struktur file di atas adalah:
 
-- Beranda: /, contohnya: https://www.basedomain.com/
-- Daftar Berita dalam Kategori: /category, contohnya: https://www.basedomain.com/category
-- Detail Berita: /category/news, contohnya https://www.basedomain.com/category/news
+- Beranda: /, contohnya: `https://www.basedomain.com/`
+- Daftar list category dalam aplikasi: `/category`, contohnya: `https://www.basedomain.com/category`
+- Detail category (news): `/category/news`, contohnya `https://www.basedomain.com/category/news`
+- Detail category (sports): `/category/sports`, contohnya `https://www.basedomain.com/category/sports`
 
 ### Dynamic Routes
 
