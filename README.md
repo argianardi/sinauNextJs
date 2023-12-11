@@ -8,8 +8,7 @@
        <ul>
          <li><a href="#basic-routes">Basic Route</a></li>
          <li><a href="#nested-routes">Nested Route</a></li>
-         <li><a href="#dynamic-routes">Dynamic Route</a></li>
-         <li><a href="#nested-dynamic-routes">Nested Dinamic Route</a></li>
+         <li><a href="#dynamic-routes-dan-nested-dinamic-routes">Dynamic Route dan Nested Dinamic Routes</a></li>
          <li><a href="#catch-all-routes">Catch All Routes</a></li>
          <li><a href="#nested-dynamic-routes">Nested Dinamic Route</a></li>
          <li><a href="#link">Link</a></li>
@@ -138,8 +137,10 @@ Berikut struktur filenya:
 
 ```
 pages/
-|-- index.jsx (Beranda)
-|-- contact.tsx
+|-- about/
+|   |  |-- index.tsx  // page about
+|-- index.tsx         // Beranda
+|-- contact.tsx       // page contact
 |-- ...
 ```
 
@@ -153,11 +154,11 @@ Merupakan cara untuk mengatur beberpa halaman yang diletakkan di halaman lain. I
 
 ```
 pages/
-|-- index.jsx (Beranda)
+|-- index.tsx             // Beranda
 |-- category/
-|   |   |-- index.jsx (page category menampilkan daftar category artikel)
-|   |   |-- news.jsx (page news yaitu salah satu category yang ada di dalam page category, menampilkan daftar artikel yang dikategorikan sebagai news)
-|   |   |-- sports.jsx (page sports yaitu salah satu category yang ada di dalam page category, menampilkan daftar artikel yang dikategorikan sebagai sports)
+|   |   |-- index.tsx     // Daftar semua category artikel
+|   |   |-- news.tsx      // Daftar semua artikel yang ber-category news
+|   |   |-- sports.tsx    // Daftar semua artikel yang ber-category sports
 |-- ...
 ```
 
@@ -165,31 +166,59 @@ pages/
 
 URL yang dihasilkan dari struktur file di atas adalah:
 
-- Beranda: /, contohnya: `https://www.basedomain.com/`
-- Daftar list category dalam aplikasi: `/category`, contohnya: `https://www.basedomain.com/category`
-- Detail category (news): `/category/news`, contohnya `https://www.basedomain.com/category/news`
-- Detail category (sports): `/category/sports`, contohnya `https://www.basedomain.com/category/sports`
+- pages/index.tsx <br/>
+  - Merupakan Halaman Beranda.
+  - Url: `/`,
+  - Contoh penggunaan url: `https://www.basedomain.com/`
+- pages/category/index.tsx <br/>
+  - Merupakan page category menampilkan daftar category artikel.
+  - Url: `/category`,
+  - Contoh penggunaan url: `https://www.basedomain.com/category`
+- pages/category/news <br/>
+  - Merupakan page news yaitu salah satu category yang ada di dalam page category, menampilkan daftar artikel yang dikategorikan sebagai news.
+  - Url: `/category/news`,
+  - Contoh penggunaan url `https://www.basedomain.com/category/news`
+- pages/category/sports <br/>
+  - Merupakan page sports yaitu salah satu category yang ada di dalam page category, menampilkan daftar artikel yang dikategorikan sebagai sports.
+  - Url: `/category/sports`
+  - Contoh penggunaan url `https://www.basedomain.com/category/sports`.
 
-### Dynamic Routes
+### Dynamic Routes dan Nested Dinamic Routes
 
 Next.js memungkinkan kita untuk membuat rute dinamis menggunakan tanda kurung siku `[]`. Dynamic Routes memungkinkan kita membuat rute dinamis berdasarkan nilai parameter yang diberikan dalam URL. Dynamic routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#convention). Misalnya kita ingin membuat situs berita, berikut contoh struktur filenya:
 
 ```
 pages/
-|-- index.jsx (Halaman Utama)
-|-- news/
-|   |   |-- index.jsx (Halaman Daftar Kategori Berita)
-|   |   |-- [category].jsx (Halaman Daftar Berita dalam Kategori)
-|   |   |-- [category]/[slug].jsx (Halaman Detail Berita)
-|-- ...
+|-- movies/
+|   |-- index.tsx              // Halaman daftar semua film
+|   |-- [genre]/
+|       |-- index.tsx          // Halaman daftar film berdasarkan genre
+|       |-- [movieTitle].tsx         // Halaman detail film berdasarkan
+|       |-- review/
+|           |-- [reviewId].tsx // Halaman detail review film berdasarkan reviewId
+|--...
 ```
+
+[[soruce code](https://github.com/argianardi/sinauNextJs/tree/routes/src/pages/movies)]
 
 URL yang dihasilkan dari struktur file di atas adalah:
 
-- Halaman Utama: /, contohnya: https://www.basedomain.com/
-- Halaman Daftar Kategori Berita: /news, contohnya: https://www.basedomain.com/news
-- Halaman Daftar Berita dalam Kategori: /news/{parameter-bebas}, contohnya: https://www.basedomain.com/politics
-- Halaman Detail Berita: /news/politics/{parameter-bebas}, contohnya: https://www.basedomain.com/politics/strategi-politik-2024
+- movies/index.tsx <br/>
+  - Merupakan page yang menampilkan daftar semua genre movie.
+  - Url: `/movies`,
+  - Contoh penggunaan url: `https://www.basedomain.com/movies`
+- movies/[genre]/index.tsx <br/>
+  - Menampilkan daftar movie berdasarkan genre tertentu.
+  - Url: `/movies/{parameter bebas}`.
+  - Contoh penggunaan url: `https://www.basedomain.com/movies/comedy`
+- movies/[genre]/[movieTitle].tsx:
+  - Halaman ini menampilkan detail movie berdasarkan judul movie.
+  - Url: `/movies/{parameter bebas}/{parameter bebas}`.
+  - Contoh penggunaan url: /movies/comedy/inception, /movies/drama/shawshank-redemption, dst.
+- movies/[genre]/review/[reviewId].tsx:
+  - Nested dynamic route untuk menampilkan halaman detail review movie berdasarkan reviewId.
+  - Url: `/movies/{parameter bebas}/review/{parameter bebas}`.
+  - Contoh penggunaan url: /movies/comedy/inception/review/123, /movies/drama/shawshank-redemption/review/456, dst.
 
 Untuk mengambil query parameter dari dinamc routes tersebut kita bisa menggunakan `useRouter` dari next/router
 
