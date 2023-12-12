@@ -3,10 +3,12 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 const LoginPage = () => {
-  const router = useRouter();
+  const { push } = useRouter();
+
   const handleLogin = () => {
-    router.push('/product');
+    push('/product');
   };
+
   return (
     <div>
       <h1>Login Page</h1>
