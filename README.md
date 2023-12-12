@@ -1,19 +1,14 @@
 ## Key Word
 
 - <details open>
-    <summary><a href="#atomic-design">Atomic Desigin</a></summary>
-    <ul>
-      <li><a href="#props-1">Props</a></li>
-      <li><a href="#default-props">Default Props</a></li>
-    </ul>
+    <a href="#atomic-design">Atomic Desigin</a>
   </details>
 - <details open>
        <summary><a href="#routing">Routing</a></summary>
        <ul>
          <li><a href="#basic-routes">Basic Route</a></li>
          <li><a href="#nested-routes">Nested Route</a></li>
-         <li><a href="#dynamic-routes">Dynamic Route</a></li>
-         <li><a href="#nested-dynamic-routes">Nested Dinamic Route</a></li>
+         <li><a href="#dynamic-routes-dan-nested-dinamic-routes">Dynamic Route dan Nested Dinamic Routes</a></li>
          <li><a href="#catch-all-routes">Catch All Routes</a></li>
          <li><a href="#nested-dynamic-routes">Nested Dinamic Route</a></li>
          <li><a href="#link">Link</a></li>
@@ -46,6 +41,38 @@
   </details>
 - <a href="#client-side-rendering">Client Side Rendering (CSR)</a>
 - <a href="#server-side-rendering">Server Side Rendering (SSR)</a>
+
+## Istilah - Istilah Di Dunia Software Development
+
+- Compiling <br/>
+  Merupakan proses mentransformasi kode dari bahasa satu ke dalam bahasa lain atau versi dari bahasa tersebut.
+- Minifying <br/>
+  Proses menghapus formatting dan komentar yang tidak digunakan tanpa mengubah fungsionalitas kode dengan tujuan untuk meningkatkan kinerja aplikasi dengan mengurangi ukuran file.
+
+- Bundling <br/>
+  Proses menggabungkan file ke dalam bundel yang dioptimalkan untuk browser, dengan tujuan mengurangi jumlah permintaan file saat pengguna mengunjungi halaman web.
+- Code Spliting <br/>
+  Proses pemisahan bundel menjadi bagian - bagian kecil yang dibutuhkan oleh setiap entry point (url/path) dengna tujuan untuk meningkatkan initial load time aplikasi dengan hanya memuat kode yang diperlukan untuk menjalankan halaman tersebut.
+- Build Time <br/>
+  Mengacu pada waktu dimana saat aplikasi sedang di-build (mentransformasi kode menjadi production environment) hingga akhirnya aplikasi siap digunakan.
+- Runtime <br/>
+  Mengacu pada waktu saat aplikasi sudah selesai di-build dan di-deploy.
+- Client <br/>
+  Merujuk ke browser pada perangkat pengguna yang mengirimkan request ke server yang kemudian diterjemahkan menjadi UI.
+- Server <br/>
+  Mengacu pada perangkat yang menyimpan kode aplikasi yang menerima permintaan dari client, melakukan komputasi, dan mengirimkan kembali respons yang sesuai.
+- Rendering <br/>
+  Proses mengonversi kode menjadi representasi HTML dari sebuah UI yang dapat dilakukan di client maupun di server dan dapat terjadi pada saat build time maupun runtime.
+- Client Side Rendering <br/>
+  Pengambilan data external dan transformasi kode menjadi representasi HTML dari sebuah UI terjadi di client.
+- Pre-Rendering (Server Side Rendering & Static Site Generation) <br/>
+  - Pengambilan data eksternal (dari api) dan transformasi kode menjadi representasi HTML dari sebuah UI terjadi sebelum hasilnya dikirim ke client.
+  - HTML akan di-generate kemudian HTML, data dan javascript dikirim ke client.
+  - HTML digunakan untuk menampilkan UI tapi belum interaktif, sedangkan react akan melakukan proses hydration dengan menggunakan data dan javascript untuk membuat komponen menjadi interaktif.
+- Server Side Rendering <br/>
+  HTML akan di-generate kemudian HTML, data dan javascript dikirm ke client yang dilakukan saat run time.
+- Static Site Generation <br/>
+  HTML akan di generate di server namun hanya di-generate sekali saat build time. Sehingga content yang ditampilkan bersifat statis.
 
 ## Atomic Design
 
@@ -97,7 +124,7 @@ src/
 
 ## Routing
 
-Routing adalah bagian penting dari pengembangan aplikasi web yang memungkinkan pengguna berpindah antara halaman-halaman yang berbeda. Routing di Next js dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing).
+Routing adalah bagian penting dari pengembangan aplikasi web yang memungkinkan user berpindah dari satu halaman ke halaman lainnya. Routing di Next js dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing).
 
 Di Next js, routing berfokus pada folder pages. Setiap file yang dibuat di dalam folder pages secara otomatis menjadi rute yang dapat diakses di aplikasi kita. Misalnya, file pages/index.js akan menjadi halaman utama, dan pages/about.js akan menjadi halaman "About". Ini sangat memudahkan pengaturan dan pemeliharaan rute, karena kita tidak perlu mengkonfigurasi rute secara manual seperti pada beberapa frame work lain.
 
@@ -105,47 +132,93 @@ Nextjs mendukung berbagai jenis rute:
 
 ### Basic Routes
 
-Kita dapat membuat rute dasar hanya dengan membuat file/folder di dalam folder pages. Misalnya, `pages/contact.js` atau `pages/contact/index.js` akan menghasilkan URL `/contact`. Basic routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts)
+Kita dapat membuat rute dasar hanya dengan membuat file/folder di dalam folder pages. Misalnya, `pages/contact.tsx` atau `pages/contact/index.tsx` akan menghasilkan URL `baseDomain/contact`. Basic routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts). <br/>
+Berikut struktur filenya:
+
+```
+pages/
+|-- about/
+|   |  |-- index.tsx  // page about
+|-- index.tsx         // Beranda
+|-- contact.tsx       // page contact
+|-- ...
+```
+
+[[source code](https://github.com/argianardi/sinauNextJs/tree/routes/src/pages)]
+
+Sehingga jika user ingin mengakses page contact, dapat dilakukan menggunakan url `baseDomain/contact`.
 
 ### Nested Routes
 
-Merupakan cara untuk mengatur halaman-halaman di dalam halaman lain. Ini membantu membuat struktur navigasi yang lebih dalam dan terorganisir. Nested routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts). Misalnya kita ingin membangun situs berita dengan struktur berikut:
+Merupakan cara untuk mengatur beberpa halaman yang diletakkan di halaman lain. Ini membantu membuat struktur navigasi yang lebih dalam dan terorganisir. Nested routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts). Misalnya kita ingin membangun situs artikel dengan struktur berikut:
 
 ```
 pages/
-|-- index.jsx (Beranda)
+|-- index.tsx             // Beranda
 |-- category/
-|   |   |-- index.jsx (Daftar berita dalam kategori)
-|   |   |-- news.jsx (Detail berita)
+|   |   |-- index.tsx     // Daftar semua category artikel
+|   |   |-- news.tsx      // Daftar semua artikel yang ber-category news
+|   |   |-- sports.tsx    // Daftar semua artikel yang ber-category sports
 |-- ...
 ```
 
+[[source code](https://github.com/argianardi/sinauNextJs/tree/routes/src/pages)]
+
 URL yang dihasilkan dari struktur file di atas adalah:
 
-- Beranda: /, contohnya: https://www.basedomain.com/
-- Daftar Berita dalam Kategori: /category, contohnya: https://www.basedomain.com/category
-- Detail Berita: /category/news, contohnya https://www.basedomain.com/category/news
+- pages/index.tsx <br/>
+  - Merupakan Halaman Beranda.
+  - Url: `/`,
+  - Contoh penggunaan url: `https://www.basedomain.com/`
+- pages/category/index.tsx <br/>
+  - Merupakan page category menampilkan daftar category artikel.
+  - Url: `/category`,
+  - Contoh penggunaan url: `https://www.basedomain.com/category`
+- pages/category/news <br/>
+  - Merupakan page news yaitu salah satu category yang ada di dalam page category, menampilkan daftar artikel yang dikategorikan sebagai news.
+  - Url: `/category/news`,
+  - Contoh penggunaan url `https://www.basedomain.com/category/news`
+- pages/category/sports <br/>
+  - Merupakan page sports yaitu salah satu category yang ada di dalam page category, menampilkan daftar artikel yang dikategorikan sebagai sports.
+  - Url: `/category/sports`
+  - Contoh penggunaan url `https://www.basedomain.com/category/sports`.
 
-### Dynamic Routes
+### Dynamic Routes dan Nested Dinamic Routes
 
-Next.js memungkinkan kita untuk membuat rute dinamis menggunakan tanda kurung siku `[]`. Dynamic Routes memungkinkan kita membuat rute dinamis berdasarkan nilai parameter yang diberikan dalam URL. Dynamic routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#convention). Misalnya kita ingin membuat situs berita, berikut contoh struktur filenya:
+Next.js memungkinkan kita untuk membuat rute dinamis menggunakan tanda kurung siku `[]`. Dynamic Routes memungkinkan kita membuat rute dinamis berdasarkan nilai parameter yang diberikan dalam URL. Dynamic routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#convention). Misalnya kita ingin membuat halaman movie, berikut contoh struktur filenya:
 
 ```
 pages/
-|-- index.jsx (Halaman Utama)
-|-- news/
-|   |   |-- index.jsx (Halaman Daftar Kategori Berita)
-|   |   |-- [category].jsx (Halaman Daftar Berita dalam Kategori)
-|   |   |-- [category]/[slug].jsx (Halaman Detail Berita)
-|-- ...
+|-- movies/
+|   |-- index.tsx              // Halaman daftar semua film
+|   |-- [genre]/
+|       |-- index.tsx          // Halaman daftar film berdasarkan genre
+|       |-- [movieTitle].tsx         // Halaman detail film berdasarkan
+|       |-- review/
+|           |-- [reviewId].tsx // Halaman detail review film berdasarkan reviewId
+|--...
 ```
+
+[[soruce code](https://github.com/argianardi/sinauNextJs/tree/routes/src/pages/movies)]
 
 URL yang dihasilkan dari struktur file di atas adalah:
 
-- Halaman Utama: /, contohnya: https://www.basedomain.com/
-- Halaman Daftar Kategori Berita: /news, contohnya: https://www.basedomain.com/news
-- Halaman Daftar Berita dalam Kategori: /news/{parameter-bebas}, contohnya: https://www.basedomain.com/politics
-- Halaman Detail Berita: /news/politics/{parameter-bebas}, contohnya: https://www.basedomain.com/politics/strategi-politik-2024
+- movies/index.tsx <br/>
+  - Merupakan page yang menampilkan daftar semua genre movie.
+  - Url: `/movies`,
+  - Contoh penggunaan url: `https://www.basedomain.com/movies`
+- movies/[genre]/index.tsx <br/>
+  - Menampilkan daftar movie berdasarkan genre tertentu.
+  - Url: `/movies/{parameter bebas}`.
+  - Contoh penggunaan url: `https://www.basedomain.com/movies/comedy`
+- movies/[genre]/[movieTitle].tsx:
+  - Halaman ini menampilkan detail movie berdasarkan judul movie.
+  - Url: `/movies/{parameter bebas}/{parameter bebas}`.
+  - Contoh penggunaan url: /movies/comedy/inception, /movies/drama/shawshank-redemption, dst.
+- movies/[genre]/review/[reviewId].tsx:
+  - Nested dynamic route untuk menampilkan halaman detail review movie berdasarkan reviewId.
+  - Url: `/movies/{parameter bebas}/review/{parameter bebas}`.
+  - Contoh penggunaan url: /movies/comedy/inception/review/123, /movies/drama/shawshank-redemption/review/456, dst.
 
 Untuk mengambil query parameter dari dinamc routes tersebut kita bisa menggunakan `useRouter` dari next/router
 
@@ -163,25 +236,6 @@ const DetailProduct = () => {
 export default DetailProduct;
 ```
 
-### Nested Dynamic Routes
-
-Kita dapat menggabungkan rute dinamis dengan rute biasa dan bersarang. Nested Dynamic route dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#convention). Berikut contoh struktur filenya:
-
-```
-pages/
-|-- index.jsx (Halaman Utama)
-|-- posts/
-|   |   |-- [slug].jsx (Halaman Detail Postingan)
-|   |   |-- [slug]/comments.jsx (Halaman Komentar)
-|-- ...
-```
-
-URL yang dihasilkan dari struktur file di atas adalah:
-
-- Halaman Utama: /, contohnya: https://www.basedomain.com
-- Halaman detail postingan: /posts/{parameter-bebas}, contohnya: https://www.basedomain.com/posts/memories-of-paris
-- Halaman Komentar: /posts/{parameter-bebas}/comments, contohnya: https://www.example.com/posts/memories-of-paris/comments
-
 ### Catch-All Routes
 
 Catch-All Routes adalah jenis dynamic route di Next js yang menggunakan tanda kurung siku `[...slug]` dalam definisi rute. Ini memungkinkan kita untuk menangani banyak segmen path yang bervariasi dalam URL. Ketika kita mencocokkan URL dengan pola tertentu ke rute ini, seluruh segmen path atau query parameter yang cocok akan diambil dan disimpan dalam bentuk array. Cath all routes dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#catch-all-segments).
@@ -198,37 +252,51 @@ Berikut contoh penggunaannya untuk case aplikasi blog yang terdiri dari berbagai
     - index.tss
   ```
 
-  - pages/index.tsx, adalah halaman beranda situs kita.
-  - pages/blog/index.tsx, adalah halaman daftar kategori di blog.
-  - pages/blog/[...slug].tsx, adalah Catch-All Routes yang akan menangani segmen path setelah /blog/. Ini adalah tempat utama di mana kita akan menangani semua kategori dan artikel.
+Berikut code di file `[...slug].tsx`:
 
-  Berikut code di file `[...slug].tsx`:
+```
+import { useRouter } from 'next/router';
+import React from 'react';
 
-  ```
-  import { useRouter } from 'next/router';
-  import React from 'react';
+const BlogDetail = () => {
+  const router = useRouter();
+  const { slug } = router.query as { slug: string[] };
+  //if access baseDomain.com/sports/monday/3 hottest news today
+  console.log(slug); //['sports', 'monday', '3 hottest news today']
 
-  const BlogDetail = () => {
-    const router = useRouter();
-    const { slug } = router.query as { slug: string[] };
-    console.log(slug); //['sports', 'monday', '3 hottest news today']
+  return (
+    <div>
+      <h2>Detail Blog</h2>
+      <p>Path Segments: {slug?.join('/')}</p>
+    </div>
+  );
+};
 
-    return (
-      <div>
-        <h2>Detail Blog</h2>
-        <p>Path Segments: {slug?.join('/')}</p>
-      </div>
-    );
-  };
+export default BlogDetail;
+```
 
-  export default BlogDetail;
-  ```
+[source code](https://github.com/argianardi/sinauNextJs/blob/routes/src/pages/blog/%5B...slug%5D.tsx)
 
-  [source code](https://github.com/argianardi/sinauNextJs/blob/routes/src/pages/blog/%5B...slug%5D.tsx)
+- pages/index.tsx, adalah halaman beranda situs kita.
+- pages/blog/index.tsx, adalah halaman daftar kategori di blog.
+- pages/blog/[...slug].tsx,
+  - Catch-All Routes yang akan menangani segmen path setelah /blog/. Ini adalah tempat utama di mana kita akan mengambil semua kategori dan artikel.
+  - Url: `/blog/{parameter bebas}/{parameter bebas}/{parameter bebas}/{parameter bebas}/{parameter bebas}`
+  - Contoh Penggunaan: baseDomain.com/sports/footbal/top-headline
 
-  Dalam contoh diatas, kita menggunakan Catch-All Routes di file `[...slug].tsx` untuk menangani segmen path setelah `/blog/`. Ini memungkinkan kita untuk menampilkan artikel berdasarkan kategori dan judul artikel dalam URL.
+### Optional Catch-All Routes
 
-  Misalnya, URL `http://localhost:3000/blog/sports/monday/3%20hottest%20news%20today` akan diarahkan ke halaman `BlogDetail`, di mana kita dapat menampilkan artikel dengan kategori "sports" dan "monday" berjudul "3 hottest news today". Dan variable `slug` akan berisi array of string seperti : [ "sports", "monday", "3 hottest news today" ].
+Optional Catch-All Routes dapat dijadikan opsional dengan menyertakan parameter dalam tanda kurung siku ganda `[[...segmen]]`. Berikut contoh struktur filenya:
+
+```
+- pages/
+  - sop/
+    - [[...slug]].tsx
+```
+
+[[source code](https://github.com/argianardi/sinauNextJs/tree/routes/src/pages/shop)]
+
+`pages/shop/[[...slug]].tsx` akan cocok dengan paramter kosong seperti `/shop`, dan juga url yang disertai parameter seperti `/shop/clothes`, `/shop/clothes/tops` dan `/shop/clothes/tops/t-shirts`.
 
 ### Link
 
