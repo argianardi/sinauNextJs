@@ -286,7 +286,17 @@ export default BlogDetail;
 
 ### Optional Catch-All Routes
 
-Optional Catch-All Routes dapat dijadikan opsional dengan menyertakan parameter dalam tanda kurung siku ganda `[[...segmen]]`. `pages/shop/[[...slug]].tsx` akan cocok dengan paramter kosong seperti `/shop`, dan juga url dengan parameter seperti `/shop/clothes`, `/shop/clothes/tops` dan `/shop/clothes/tops/t-shirts`.
+Optional Catch-All Routes dapat dijadikan opsional dengan menyertakan parameter dalam tanda kurung siku ganda `[[...segmen]]`. Berikut contoh struktur filenya:
+
+```
+- pages/
+  - sop/
+    - [[...slug]].tsx
+```
+
+[[source code](https://github.com/argianardi/sinauNextJs/tree/routes/src/pages/shop)]
+
+`pages/shop/[[...slug]].tsx` akan cocok dengan paramter kosong seperti `/shop`, dan juga url yang disertai parameter seperti `/shop/clothes`, `/shop/clothes/tops` dan `/shop/clothes/tops/t-shirts`.
 
 ### Link
 
