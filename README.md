@@ -124,7 +124,7 @@ src/
 
 ## Routing
 
-Routing adalah bagian penting dari pengembangan aplikasi web yang memungkinkan pengguna berpindah antara halaman-halaman yang berbeda. Routing di Next js dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing).
+Routing adalah bagian penting dari pengembangan aplikasi web yang memungkinkan user berpindah dari satu halaman ke halaman lainnya. Routing di Next js dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing).
 
 Di Next js, routing berfokus pada folder pages. Setiap file yang dibuat di dalam folder pages secara otomatis menjadi rute yang dapat diakses di aplikasi kita. Misalnya, file pages/index.js akan menjadi halaman utama, dan pages/about.js akan menjadi halaman "About". Ini sangat memudahkan pengaturan dan pemeliharaan rute, karena kita tidak perlu mengkonfigurasi rute secara manual seperti pada beberapa frame work lain.
 
@@ -185,7 +185,7 @@ URL yang dihasilkan dari struktur file di atas adalah:
 
 ### Dynamic Routes dan Nested Dinamic Routes
 
-Next.js memungkinkan kita untuk membuat rute dinamis menggunakan tanda kurung siku `[]`. Dynamic Routes memungkinkan kita membuat rute dinamis berdasarkan nilai parameter yang diberikan dalam URL. Dynamic routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#convention). Misalnya kita ingin membuat situs berita, berikut contoh struktur filenya:
+Next.js memungkinkan kita untuk membuat rute dinamis menggunakan tanda kurung siku `[]`. Dynamic Routes memungkinkan kita membuat rute dinamis berdasarkan nilai parameter yang diberikan dalam URL. Dynamic routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#convention). Misalnya kita ingin membuat halaman movie, berikut contoh struktur filenya:
 
 ```
 pages/
@@ -236,25 +236,6 @@ const DetailProduct = () => {
 export default DetailProduct;
 ```
 
-### Nested Dynamic Routes
-
-Kita dapat menggabungkan rute dinamis dengan rute biasa dan bersarang. Nested Dynamic route dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#convention). Berikut contoh struktur filenya:
-
-```
-pages/
-|-- index.jsx (Halaman Utama)
-|-- posts/
-|   |   |-- [slug].jsx (Halaman Detail Postingan)
-|   |   |-- [slug]/comments.jsx (Halaman Komentar)
-|-- ...
-```
-
-URL yang dihasilkan dari struktur file di atas adalah:
-
-- Halaman Utama: /, contohnya: https://www.basedomain.com
-- Halaman detail postingan: /posts/{parameter-bebas}, contohnya: https://www.basedomain.com/posts/memories-of-paris
-- Halaman Komentar: /posts/{parameter-bebas}/comments, contohnya: https://www.example.com/posts/memories-of-paris/comments
-
 ### Catch-All Routes
 
 Catch-All Routes adalah jenis dynamic route di Next js yang menggunakan tanda kurung siku `[...slug]` dalam definisi rute. Ini memungkinkan kita untuk menangani banyak segmen path yang bervariasi dalam URL. Ketika kita mencocokkan URL dengan pola tertentu ke rute ini, seluruh segmen path atau query parameter yang cocok akan diambil dan disimpan dalam bentuk array. Cath all routes dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#catch-all-segments).
@@ -271,37 +252,41 @@ Berikut contoh penggunaannya untuk case aplikasi blog yang terdiri dari berbagai
     - index.tss
   ```
 
-  - pages/index.tsx, adalah halaman beranda situs kita.
-  - pages/blog/index.tsx, adalah halaman daftar kategori di blog.
-  - pages/blog/[...slug].tsx, adalah Catch-All Routes yang akan menangani segmen path setelah /blog/. Ini adalah tempat utama di mana kita akan menangani semua kategori dan artikel.
+Berikut code di file `[...slug].tsx`:
 
-  Berikut code di file `[...slug].tsx`:
+```
+import { useRouter } from 'next/router';
+import React from 'react';
 
-  ```
-  import { useRouter } from 'next/router';
-  import React from 'react';
+const BlogDetail = () => {
+  const router = useRouter();
+  const { slug } = router.query as { slug: string[] };
+  //if access baseDomain.com/sports/monday/3 hottest news today
+  console.log(slug); //['sports', 'monday', '3 hottest news today']
 
-  const BlogDetail = () => {
-    const router = useRouter();
-    const { slug } = router.query as { slug: string[] };
-    console.log(slug); //['sports', 'monday', '3 hottest news today']
+  return (
+    <div>
+      <h2>Detail Blog</h2>
+      <p>Path Segments: {slug?.join('/')}</p>
+    </div>
+  );
+};
 
-    return (
-      <div>
-        <h2>Detail Blog</h2>
-        <p>Path Segments: {slug?.join('/')}</p>
-      </div>
-    );
-  };
+export default BlogDetail;
+```
 
-  export default BlogDetail;
-  ```
+[source code](https://github.com/argianardi/sinauNextJs/blob/routes/src/pages/blog/%5B...slug%5D.tsx)
 
-  [source code](https://github.com/argianardi/sinauNextJs/blob/routes/src/pages/blog/%5B...slug%5D.tsx)
+- pages/index.tsx, adalah halaman beranda situs kita.
+- pages/blog/index.tsx, adalah halaman daftar kategori di blog.
+- pages/blog/[...slug].tsx,
+  - Catch-All Routes yang akan menangani segmen path setelah /blog/. Ini adalah tempat utama di mana kita akan mengambil semua kategori dan artikel.
+  - Url: `/blog/{parameter bebas}/{parameter bebas}/{parameter bebas}/{parameter bebas}/{parameter bebas}`
+  - Contoh Penggunaan: baseDomain.com/sports/footbal/top-headline
 
-  Dalam contoh diatas, kita menggunakan Catch-All Routes di file `[...slug].tsx` untuk menangani segmen path setelah `/blog/`. Ini memungkinkan kita untuk menampilkan artikel berdasarkan kategori dan judul artikel dalam URL.
+### Optional Catch-All Routes
 
-  Misalnya, URL `http://localhost:3000/blog/sports/monday/3%20hottest%20news%20today` akan diarahkan ke halaman `BlogDetail`, di mana kita dapat menampilkan artikel dengan kategori "sports" dan "monday" berjudul "3 hottest news today". Dan variable `slug` akan berisi array of string seperti : [ "sports", "monday", "3 hottest news today" ].
+Optional Catch-All Routes dapat dijadikan opsional dengan menyertakan parameter dalam tanda kurung siku ganda `[[...segmen]]`. `pages/shop/[[...slug]].tsx` akan cocok dengan paramter kosong seperti `/shop`, dan juga url dengan parameter seperti `/shop/clothes`, `/shop/clothes/tops` dan `/shop/clothes/tops/t-shirts`.
 
 ### Link
 
