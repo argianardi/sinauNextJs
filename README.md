@@ -461,6 +461,45 @@ CSS Modules adalah pendekatan yang memungkinkan kita untuk mengisolasi style kom
   export default LoginViews;
   ```
 
+### CSS in JS
+
+Kita bisa menambahkan class css di dalam tag html secara langsung menggunakan properti `style`. Berikut contoh penggunaannya di coding:
+
+```
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import style from './Login.module.css';
+
+const LoginViews = () => {
+  const { push } = useRouter();
+
+  const handleLogin = () => {
+    push('/product');
+  };
+
+  return (
+    <div className={style.layout}>
+      <h1>Login Page</h1>
+      <button onClick={handleLogin}>Login</button>
+      <p
+        style={{
+          border: '1px solid blue',
+          marginTop: '10px',
+          borderRadius: '10px',
+          padding: '8px',
+        }}
+      >
+        Belum punya akun?, Register <Link href={'/auth/register'}>di sini</Link>{' '}
+      </p>
+    </div>
+  );
+};
+
+export default LoginViews;
+```
+
 ### SASS (Syntactically Awesome Style Sheets)
 
 SASS adalah Preprosesor CSS populer yang memperluas CSS dengan fitur seperti variabel, nested rules dan mixins. Berikut beberpa keunggulan dari SASS:
