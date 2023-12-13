@@ -318,7 +318,7 @@ Di dalam Next JS kita dapat melakukan styling dengan beberapa cara, semuanya dib
 
 ### Global CSS
 
-Global CSS adalah metode styling di mana kita dapat membuat dan mengaplikasikan styling (kelas dan properti css) yang berlaku secara global untuk seluruh aplikasi web kita. Ini berarti kelas dan properti css yang kita definisikan dalam file CSS global akan memengaruhi atau diterapkan ke semua halaman dan komponen dalam proyek Next JS kita. Berikut penerapannya di coding:
+Global CSS adalah metode styling di mana kita dapat membuat dan mengaplikasikan styling (kelas dan properti css) yang berlaku secara global untuk seluruh aplikasi web kita. Ini berarti kelas dan properti css yang kita definisikan dalam file CSS global akan memengaruhi atau diterapkan ke semua halaman dan komponen dalam proyek Next JS kita. Global css hanya dapat digunakan untuk file `_app.js` atau `_app.tsx` saja. Berikut penerapannya di coding:
 
 - Buat File CSS global <br/>
   Buat file CSS global dalam folder style dengan nama bebas misalnya dengan nama global.css atau styles.css yang nantinya akan diisi kelas dan properti css yang akan berlaku secara global. Berikut skema struktur foldernya:
@@ -390,18 +390,19 @@ Global CSS adalah metode styling di mana kita dapat membuat dan mengaplikasikan 
 CSS Modules adalah pendekatan yang memungkinkan kita untuk mengisolasi style komponen dengan membuat file CSS yang hanya berlaku untuk komponen tertentu saja. Ini dapat menghindari konflik nama kelas CSS antar komponen dalam aplikasi kita. Berikut contoh penggunaannya di coding:
 
 - Buat file Css Modul <br/>
-  Buat file CSS dengan ekstensi `.module.css`. Misalnya, jika kita memiliki komponen `MyComponent.jsx`, maka buat css module jadi `MyComponent.module.css`.
+  Buat file CSS dengan ekstensi `.module.css`. Misalnya, jika kita memiliki komponen `Login.tsx`, maka buat css module jadi `Login.module.css`.
 
   ```
-  // MyComponent.module.css
+  // Login.module.css
 
-  .button {
-    background-color: blue;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
+  .layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
+
   ```
 
   Berikut skema struktur filenya
@@ -409,11 +410,18 @@ CSS Modules adalah pendekatan yang memungkinkan kita untuk mengisolasi style kom
   ```
   my-nextjs-app/
   |-- components/
-  |   |-- MyComponent.js
+  |   |-- MyComponent.tsx
   |-- pages/
-  |   |-- index.js
+  |   |-- auth/
+  |   |   |-- login.tsx
+  |   |-- index.tsx
   |-- styles/
   |   |-- MyComponent.module.css
+  |-- views
+  |   |-- Auth/
+  |   |   |-- Login/
+  |   |   |   |-- index.tsx
+  |   |   |   |-- Login.module.css
   |-- .babelrc
   |-- package.json
   |-- next.config.js
@@ -421,21 +429,36 @@ CSS Modules adalah pendekatan yang memungkinkan kita untuk mengisolasi style kom
   ```
 
 - Import CSS Modul di file jsx/tsx <br/>
-  Import CSS Module di komponen kita (misalnya, `MyComponent.tsx`), kita dapat mengimpor dan menggunakan kelas-kelas CSS dari modul tersebut.
+  Import CSS Module di komponen kita (misalnya, `Login.tsx`), kita dapat mengimpor dan menggunakan kelas-kelas CSS dari modul tersebut.
 
   ```
-  // MyComponent.jsx
+    // src/views/Auth/Login/index.tsx
 
+    import Link from 'next/link';
+  import { useRouter } from 'next/router';
   import React from 'react';
-  import styles from './MyComponent.module.css';
 
-  function MyComponent() {
+  import style from './Login.module.css';
+
+  const LoginViews = () => {
+    const { push } = useRouter();
+
+    const handleLogin = () => {
+      push('/product');
+    };
+
     return (
-      <button className={styles.button}>Tombol</button>
+      <div className={style.layout}>
+        <h1>Login Page</h1>
+        <button onClick={handleLogin}>Login</button>
+        <p>
+          Belum punya akun?, Register <Link href={'/auth/register'}>di sini</Link>{' '}
+        </p>
+      </div>
     );
-  }
+  };
 
-  export default MyComponent;
+  export default LoginViews;
   ```
 
 ### SASS (Syntactically Awesome Style Sheets)
