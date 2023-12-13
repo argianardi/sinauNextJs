@@ -15,7 +15,14 @@ const LoginViews = () => {
     <div className={style.layout}>
       <h1>Login Page</h1>
       <button onClick={handleLogin}>Login</button>
-      <p>
+      <p
+        style={{
+          border: '1px solid blue',
+          marginTop: '10px',
+          borderRadius: '10px',
+          padding: '8px',
+        }}
+      >
         Belum punya akun?, Register <Link href={'/auth/register'}>di sini</Link>{' '}
       </p>
     </div>
