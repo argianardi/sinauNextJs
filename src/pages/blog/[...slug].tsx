@@ -8,7 +8,7 @@ const BlogDetail = () => {
 
   return (
     <div>
-      <h2>Detail Blog</h2>
+      <h2 className="text-blue-900">Detail Blog</h2>
       <p>Path Segments: {slug?.join('/')}</p>
     </div>
   );
