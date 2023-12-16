@@ -26,3 +26,7 @@ a {
 .text-red {
   color: red;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
