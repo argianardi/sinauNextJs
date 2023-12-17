@@ -5,7 +5,7 @@ const Page2 = () => {
   return (
     <ViewTitlePage
       titleOfContent="Belajar title page untuk halaman 2"
-      pageOfTitle="title page 1"
+      pageOfTitle="title page 2"
     />
   );
 };
