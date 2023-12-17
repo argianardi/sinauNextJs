@@ -22,3 +22,11 @@ a {
   background-color: black;
   color: white;
 }
+
+.text-red {
+  color: red;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

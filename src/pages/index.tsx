@@ -12,7 +12,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/vercel.svg" />
       </Head>
-      <main className={` ${inter.className}`}>Halaman beranda</main>
+      <main className={` ${inter.className}`}>
+        <div className="text-xl text-center text-red-900">Halaman Beranda</div>
+      </main>
     </>
   );
 }
