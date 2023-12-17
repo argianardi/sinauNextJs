@@ -33,6 +33,7 @@
          <li><a href="#global-css">Global CSS</a></li>
          <li><a href="#css-modules">Module CSS</a></li>
          <li><a href="#sass-syntactically-awesome-style-sheets">SASS</a></li>
+         <li><a href="#menggunakan-tailwind-css">Tailwind</a></li>
        </ul>
   </details>
 
@@ -405,6 +406,8 @@ CSS Modules adalah pendekatan yang memungkinkan kita untuk mengisolasi style kom
 
   ```
 
+  [[source code](https://github.com/argianardi/sinauNextJs/blob/styling/src/views/Auth/Login/Login.module.css)]
+
   Berikut skema struktur filenya
 
   ```
@@ -427,6 +430,8 @@ CSS Modules adalah pendekatan yang memungkinkan kita untuk mengisolasi style kom
   |-- next.config.js
   |-- ...
   ```
+
+  [[source code](https://github.com/argianardi/sinauNextJs/tree/styling/src)]
 
 - Import CSS Modul di file jsx/tsx <br/>
   Import CSS Module di komponen kita (misalnya, `Login.tsx`), kita dapat mengimpor dan menggunakan kelas-kelas CSS dari modul tersebut.
@@ -460,6 +465,8 @@ CSS Modules adalah pendekatan yang memungkinkan kita untuk mengisolasi style kom
 
   export default LoginViews;
   ```
+
+  [[source code](https://github.com/argianardi/sinauNextJs/blob/styling/src/views/Auth/Login/index.tsx)]
 
 ### CSS in JS
 
@@ -499,6 +506,8 @@ const LoginViews = () => {
 
 export default LoginViews;
 ```
+
+[[source code](https://github.com/argianardi/sinauNextJs/blob/styling/src/views/Auth/Login/index.tsx)]
 
 ### SASS (Syntactically Awesome Style Sheets)
 
@@ -567,6 +576,43 @@ Berikut contoh penggunaannya di coding:
 
   export default MyComponent;
   ```
+
+Atau kita juga bisa menggunakan class yang valuenya dinamis dan value tersebut berasal dari file lain (scss global).
+Misalnya kita ingin menggunakan class `background-color` yang valuenya dinamis dan berasal dari file scss global yaitu `color.scss` untuk file css module `Register.module.scss`. Berikut contoh penggunaan glocal scss yang digunakan untuk mendeklarasikan value color di coding:
+
+```
+styles/color.scss
+
+$schema: (
+  primary: #0f788d,
+);
+
+```
+
+[[source code](https://github.com/argianardi/sinauNextJs/blob/styling/src/styles/color.scss)]
+
+Kemudain kita dapat menggunakan value color di global scss tadi untuk module scss register di dalam file `Register.module.scss`. berikut contoh penggunaannya di coding:
+
+```
+views/Auth/Register/Register.module.scss
+
+@import '@/styles/color.scss';
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: map-get($map: $schema, $key: primary);
+}
+```
+
+[[source code](https://github.com/argianardi/sinauNextJs/blob/styling/src/views/Auth/Register/Register.module.scss)]
+
+### Menggunakan Tailwind CSS
+
+Konfigurasi tailwind untuk next page router sudah terdokumentasi dengan baiki [disini](https://nextjs.org/docs/pages/building-your-application/styling/tailwind-css)
 
 ## Kumpulan Fitur
 
