@@ -781,3 +781,58 @@ export default AppShell;
 Pada code conditional rendering `{!disabledNavbar.includes(pathname) && <Navbar />}` akan diperiksa apakah `pathname` saat ini (page yang sedang di-render) sama atau tidak dengan path yang ada dalam array `disabledNavbar`. Jika tidak sama, maka Navbar akan ditampilkan di dalam page saat ini. Ini digunakan untuk mengendalikan apakah Navbar akan muncul atau tidak berdasarkan path saat ini.
 
 </details>
+
+### Membuat Title Page Dinamis Berganti Sesuai Page yang dibuka
+
+Berikut langkah - langkah untuk membuatnya:
+
+- Buat code view page yang ingin dibuat dinamis titlenya didalam folder `src/views`, berikut contoh penggunaannya di coding:
+
+  ```
+  src/views/TitlePage/index.tsx
+
+  import Head from 'next/head';
+  import React from 'react';
+
+  const ViewTitlePage: React.FC<{
+    titleOfContent: string;
+    pageOfTitle: string;
+  }> = ({ titleOfContent, pageOfTitle }) => {
+    return (
+      <>
+        <Head>
+          <title>Sinau NextJS | {pageOfTitle} </title>
+        </Head>
+        <div>{titleOfContent}</div>
+      </>
+    );
+  };
+
+  export default ViewTitlePage;
+  ```
+
+  [[soruce code](https://github.com/argianardi/sinauNextJs/blob/errorPage/src/views/TitlePage/index.tsx)]
+
+- Buat file page yang ingin dibuat dinamis titlenya kemudian import view page tadi dan isikan prop title konten dan title pagenya, berikut contoh penggunaannya di coding:
+
+  ```
+  src/pages/title/page1.tsx
+
+  import ViewTitlePage from '@/views/TitlePage';
+  import React from 'react';
+
+  const Page1 = () => {
+    return (
+      <ViewTitlePage
+        titleOfContent="Belajar title page Halaman 1"
+        pageOfTitle="title page 1"
+      />
+    );
+  };
+
+  export default Page1;
+  ```
+
+  [[source code](https://github.com/argianardi/sinauNextJs/blob/errorPage/src/pages/title/page1.tsx)]
+
+Sehingga ketika user membuka url `baseDomain/title/page1`, akan terbuka page1 dengan title `sinau nextJS | page 1`.
