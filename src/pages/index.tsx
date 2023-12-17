@@ -13,7 +13,7 @@ export default function Home() {
         <link rel="icon" href="/vercel.svg" />
       </Head>
       <main className={` ${inter.className}`}>
-        <div className="text-xl text-center text-red-900">sdfdf</div>
+        <div className="text-xl text-center text-red-900">Halaman Beranda</div>
       </main>
     </>
   );
