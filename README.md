@@ -522,7 +522,7 @@ Error page adalah halaman khusus yang ditampilkan ketika terjadi kesalahan, yait
 ### Buat Error Page
 
 - Buat file Error Page <br/>
-  Buat file error page di dalam direktori pages dengan nama yang sesuai, Misalnya, 404.jsx atau 404.tsx. Berikut skema struktur foldernya:
+  Buat file error page di dalam direktori pages dengan nama yang sesuai, Misalnya, 404.tsx atau 404.jsx, \_error.tsx atau \_error.jsx. Berikut skema struktur foldernya:
 
   ```
   my-nextjs-app/
