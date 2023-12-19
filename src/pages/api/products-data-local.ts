@@ -22,13 +22,13 @@ export default function handler(
     {
       id: 101,
       name: 'Sepatu Olahraga Nike Air Zoom Pegasus 38',
-      price: 120.0,
+      price: 120000,
       size: '42',
     },
     {
       id: 202,
       name: 'Kamera DSLR Canon EOS 200D',
-      price: 249.0,
+      price: 249000,
       size: 'N/A',
     },
   ];
