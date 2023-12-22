@@ -924,21 +924,35 @@ export default Custom404;
 
 API Routes adalah salah satu fitur yang powerfull di Next.js yang memungkinkan kita untuk membuat endpoint API langsung dari project Next js kita. API routes ini memungkinkan kita untuk mengekspos fungsi-fungsi yang dapat diakses melalui HTTP, seperti pengambilan data dari database, pemrosesan data, atau operasi lainnya. API Routes biasanya digunakan untuk menyediakan data untuk halaman web kita atau digunakan sebagai back-end untuk aplikasi client.
 
-### Pengaplikasian API Routes
+### Pembuatan API Routes (Sisi Backend)
 
 Berikut contoh penggunaannya di coding:
 
 - Buat Folder pages/api <br/>
   Pertama kita harus membuat folder dengan nama `api` di dalam folder pages di project Next.js kita. Semua file yang kita letakkan di dalam folder `api` ini akan menjadi API Routes.
 - Buat File API Route <br/>
-  Buat file JavaScript atau TypeScript di dalam folder `pages/api`. Nama file ini akan menjadi bagian dari URL API kita. Misalnya, jika kita membuat file users.js, API akan dapat diakses melalui `base-domain/api/users`.
+  Buat file JavaScript atau TypeScript di dalam folder `pages/api`. Nama file ini akan menjadi end point untuk API kita. Misalnya, jika kita membuat file dengan nama products-data-local.ts, API yang kita dapat diakses melalui url `base-domain/api/products-data-local`.
 - Buat Logic API <br/>
-  Di dalam file API Route tersebut, kita dapat menyediakan logika untuk API kita. Kita dapat mengimpor modul, mengambil data dari database, melakukan operasi tertentu, dan kemudian mengembalikan respons dalam format JSON. Berikut contoh penggunaannya di coding:
+  Di dalam file API Route tersebut, kita dapat menyediakan logika untuk API kita. Kita dapat mengimpor modul, mengambil data dari database (untuk contoh ini kita menggunakan fake data yang kita asign sendiri), melakukan operasi tertentu, dan kemudian mengembalikan respons dalam format JSON.
+  Berikut skema struktur folder untuk API routes di next js
+
+  ```
+  project-root/
+    ├─ pages/
+    │   ├─ api/
+    │   │   ├─ hello.ts
+    |   |   ├─ products-data-local.ts
+    │   │   ├─ products.ts
+    │   │   ├─ ...
+    ├─ ...
+  ```
+
+  Berikut contoh penggunaannya di coding:
 
   ```
   import { NextApiRequest, NextApiResponse } from 'next';
 
-  // Definisikan tipe data yang akan digunakan untuk respon API (untuk typescript)
+  // Define tipe data untuk respon API (khusus untuk typescript)
   type Data = {
     status: boolean;
     statusCode: number;
@@ -960,13 +974,13 @@ Berikut contoh penggunaannya di coding:
       {
         id: 101,
         name: 'Sepatu Olahraga Nike Air Zoom Pegasus 38',
-        price: 120.0,
+        price: 120000,
         size: '42',
       },
       {
         id: 202,
-        name: 'Kamera DSLR Canon EOS 5D Mark IV',
-        price: 2499.99,
+        name: 'Kamera DSLR Canon EOS 200D',
+        price: 249000,
         size: 'N/A',
       },
     ];
@@ -976,30 +990,103 @@ Berikut contoh penggunaannya di coding:
   }
   ```
 
-  - `Export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) { ... }` <br/>
-    Ini adalah eksport dari fungsi yang akan menangani API request. Fungsi handler menerima dua parameter:
-    - req (NextApiRequest): Objek yang mewakili HTTP request yang masuk.
-    - res (NextApiResponse<Data>): Objek yang digunakan untuk mengirim respon HTTP kembali ke client dengan tipe data Data yang telah didefinisikan sebelumnya.
-  - Di dalam fungsi handler, ada deklarasi variabel `data` yang berisi array of objek produk yang akan digunakan sebagai data respon API.
-  - `res.status(200).json({ status: true, statusCode: 200, data });` <br/>
-    Ini adalah code yang mengirim respon JSON ke client:
-    - Fungsi status(200) digunakan untuk mengatur kode status HTTP menjadi 200 (OK)
-    - Kemudian json({ ... }) digunakan untuk mengirim data dalam format JSON sebagai respon. Data yang dikirimkan termasuk status, code status, dan array produk yang sudah didefinisikan sebelumnya.
+  [[source code](https://github.com/argianardi/sinauNextJs/blob/API-Route/src/pages/api/products-data-local.ts)]
 
-- Lakukan integrasi API di Halaman/komponen kita (sisi front end) <br/>
-  Kita dapat melakukan integrasi API yang telah kita buat di halaman Next.js kita, dengan menggunakan fetch atau library HTTP lainnya.
+- `Export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) { ... }` <br/>
+  Ini adalah eksport dari fungsi yang akan menangani API request. Fungsi handler menerima dua parameter:
+  - req (NextApiRequest): Objek yang mewakili HTTP request yang masuk.
+  - res (NextApiResponse<Data>): Objek yang digunakan untuk mengirim respon HTTP kembali ke client dengan tipe data Data yang telah didefinisikan sebelumnya.
+- Di dalam fungsi handler, ada deklarasi variabel `data` yang berisi array of objek produk yang akan digunakan sebagai data respon API.
+- `res.status(200).json({ status: true, statusCode: 200, data });` <br/>
+  Ini adalah code yang mengirim respon JSON ke client:
+  - Fungsi status(200) digunakan untuk mengatur kode status HTTP menjadi 200 (OK)
+  - Kemudian json({ ... }) digunakan untuk mengirim data dalam format JSON sebagai respon. Data yang dikirimkan termasuk status, code status, dan array produk yang sudah didefinisikan sebelumnya.
+- Selanjutnya coba tes api yang kita buat, di browser dengan url `baseDomain/api/namaFile`.
 
-Berikut skema struktur folder untuk API routes di next js
+[[source code](https://github.com/argianardi/sinauNextJs/tree/API-Route/src/pages/api)]
+
+### Fetch API dari API Rotes (Sisi Front End)
+
+Setelah berhasil membuat API selanjutnya kita buat consume api tersebut di sisi front end, berikut langkah - langkahnya:
+
+- Buat Komponen view di dalam folder view, berikut contoh penggunaannnya di coding:
+
+  ```
+  import React from 'react';
+
+  type Product = {
+    id: number;
+    name: string;
+    price: number;
+    size: string;
+  };
+
+  const ProductView = ({ products }: { products: Product[] }) => {
+    return (
+      <div>
+        <h2>Daftar Produk</h2>
+        <ul>
+          {products?.map((product) => (
+            <li>
+              {product.name} - {`Size: ${product.size}`}
+              <br />
+              Harga: Rp {product.price.toLocaleString('id-ID')}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
+  export default ProductView;
+  ```
+
+  [[source code]](https://github.com/argianardi/sinauNextJs/blob/API-Route/src/views/Product/ProductView.tsx)
+
+  - Selanjutnya buat file page, lakukan fetching api dari api routes yang kita buat, import komponen view yang kita buat tadi dan kirimkan data hasil fetch api dari api routes ke komponen view melalui prop. Berikut contoh penggunaannya di coding:
+
+    ```
+    import ProductView from '@/views/Product/ProductView';
+    import React, { useEffect, useState } from 'react';
+
+    const ProductDataLocalPage = () => {
+      const [products, setProducts] = useState([]);
+
+      useEffect(() => {
+        fetch('/api/products-data-local')
+          .then((res) => res.json())
+          .then((data) => {
+            setProducts(data?.data);
+          });
+      }, []);
+
+      return <ProductView products={products} />;
+    };
+
+    export default ProductDataLocalPage;
+    ```
+
+    [[source code](https://github.com/argianardi/sinauNextJs/blob/API-Route/src/pages/product-data-local/index.tsx)]
+
+Berikut contoh struktur filenya:
 
 ```
 project-root/
   ├─ pages/
   │   ├─ api/
-  │   │   ├─ users.js
-  │   │   ├─ products.js
+  │   │   ├─ hello.ts
+  |   |   ├─ products-data-local.ts
+  │   │   ├─ products.ts
+  │   ├─ product-data-local/
+  |   |   ├─ index.tsx
+  ├─ views/
+  |   ├─ Product
+  │   │   ├─ ProductView.tsx
   │   │   ├─ ...
   ├─ ...
 ```
+
+[[source code](https://github.com/argianardi/sinauNextJs/tree/API-Route/src)]
 
 ### Kapan Menggunakan API Routes
 
