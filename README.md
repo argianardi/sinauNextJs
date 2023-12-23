@@ -17,12 +17,6 @@
        </ul>
   </details>
 - <details open>
-       <summary><a href="#kumpulan-fitur">Kumpulan Fitur</a></summary>
-       <ul>
-         <li><a href="#conditional-rendering-sebuah-component-di-page-tertentu">Conditional Rendering Komponen di pages Tertentu</a></li>
-       </ul>
-  </details>
-- <details open>
        <summary><a href="#styling">Styling</a></summary>
        <ul>
          <li><a href="#global-css">Global CSS</a></li>
@@ -40,8 +34,22 @@
          <li><a href="#problem-dalam-penggunaan-aspath">Problem Dalam Penggunaan asPath</a></li>
        </ul>
   </details>
+- <details open>
+  <summary><a href="#api-routes">API Routes</a></summary>
+  <ul>
+     <li><a href="#pembuatan-api-routes-sisi-backend">Buat API Routes (Sisi Backend)</a></li>
+      <li><a href="#fetch-api-dari-api-rotes-sisi-front-end">Fetch API dari API Routes (sisi Front End)</a></li>
+  </ul>
+  </details>
 - <a href="#client-side-rendering">Client Side Rendering (CSR)</a>
 - <a href="#server-side-rendering">Server Side Rendering (SSR)</a>
+- <details open>
+    <summary><a href="#kumpulan-fitur">Kumpulan Fitur</a></summary>
+     <ul>
+       <li><a href="#conditional-rendering-sebuah-component-di-page-tertentu">Conditional Rendering Komponen di pages Tertentu</a></li>
+       <li><a href="#membuat-title-page-dinamis-berganti-sesuai-page-yang-dibuka">Membuat Title Page Dinamis Suai Page yang Dibuka </a></li> 
+      </ul>
+  </details>
 
 ## Istilah - Istilah Di Dunia Software Development
 
@@ -692,6 +700,7 @@ views/Auth/Register/Register.module.scss
 ### Menggunakan Tailwind CSS
 
 Konfigurasi tailwind untuk next page router sudah terdokumentasi dengan baiki [disini](https://nextjs.org/docs/pages/building-your-application/styling/tailwind-css)
+
 ## Custom Error Page
 
 Error page adalah halaman khusus yang ditampilkan ketika terjadi kesalahan, yaitu ketika user mengakses halaman dengan path yang tidak tersedia di dalam routing di aplikasi web kita. Berikut contoh penggunaannya di coding:
@@ -1101,81 +1110,131 @@ Kita dapat menggunakan API Routes di Next.js dalam berbagai situasi, termasuk:
 
 Pengambilan data eksternal dan transformasi code menjadi representasi HTML dari sebuah UI yang terjadi di client (client-side). Pada client side rendering biasanya browser akan menerima struktur HTML kosong serti tag html, body dan div kemudian server akan mengirimkan serangkaian instruksi javascript untuk mengkonstrak atau membangun sebuah UI selanjutnya akan dilakukan rendering di sisi client. Ini berarti semua proses rendering tersebut dilakukan di device user (client-side).
 
-```
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import styles from '@/styles/product.module.scss';
-import useSWR from 'swr';
-import { fetcher } from '@/utils/swr/fetcher';
+Misalnya kita ingin melakaukan fetch api product dari server menggunakan Client Side Rendering, dapat dilakukan dengan langkah - langkah berikut:
 
-type productType = {
-  category: string;
-  id: string;
-  image: string;
-  name: string;
-  price: number;
-};
+- Buat file component view product, berikut contoh penggunaannya dicoding:
 
-const ProductPage = () => {
-  // useEffect(() => {
-  //   getProducts();
-  // }, []);
+  ```
+  //src/views/ProductFromServer.tsx
 
-  // const getProducts = async () => {
-  //   try {
-  //     const response = await axios.get('api/products');
-  //     // console.log(response.data.data);
-  //     setProducts(response.data.data);
-  //   } catch (error) {
-  //     console.log('terjadi kesalahan: ', error);
-  //   }
-  // };
+  import React from 'react';
 
-  const { data, error, isLoading } = useSWR('/api/products', fetcher);
+  import styles from '@/views/Product/Product.module.scss';
 
-  return (
-    <div className={styles.product}>
-      <h1 className={styles.product__title}>Product Page</h1>
-      <div className={styles.product__content}>
-        {isLoading ? (
-          <div className={styles.product__content__skeleton}>
-            <div className={styles.product__content__skeleton__image} />
-            <div className={styles.product__content__skeleton__name} />
-            <div className={styles.product__content__skeleton__category} />
-            <div className={styles.product__content__skeleton__price} />
-          </div>
-        ) : (
-          <>
-            {data.data?.map((product: productType) => (
-              <div key={product.id} className={styles.product__content__item}>
-                <div className={styles.product__content__item__image}>
-                  <img src={product.image} alt={product.name} />
+  type product = {
+    category: string;
+    id: string;
+    image: string;
+    name: string;
+    price: number;
+  };
+
+  const ProductFromServer = ({ products }: { products: product[] }) => {
+    return (
+      <div className={styles.product}>
+        <h1 className={styles.product__title}>Product Page</h1>
+        <div className={styles.product__content}>
+          {products.length === 0 ? (
+            <div className={styles.product__content__skeleton}>
+              <div className={styles.product__content__skeleton__image} />
+              <div className={styles.product__content__skeleton__name} />
+              <div className={styles.product__content__skeleton__category} />
+              <div className={styles.product__content__skeleton__price} />
+            </div>
+          ) : (
+            <>
+              {products?.map((product: product) => (
+                <div key={product.id} className={styles.product__content__item}>
+                  <div className={styles.product__content__item__image}>
+                    <img src={product.image} alt={product.name} />
+                  </div>
+                  <h4 className={styles.product__content__item__name}>
+                    {product.name}
+                  </h4>
+                  <p className={styles.product__content__item__category}>
+                    {product.category}
+                  </p>
+                  <p
+                    className={`text-sm ${styles.product__content__item__price}`}
+                  >
+                    {product.price.toLocaleString('id-ID', {
+                      style: 'currency',
+                      currency: 'IDR',
+                    })}
+                  </p>
                 </div>
-                <h4 className={styles.product__content__item__name}>
-                  {product.name}
-                </h4>
-                <p className={styles.product__content__item__category}>
-                  {product.category}
-                </p>
-                <p className={styles.product__content__item__price}>
-                  {product.price.toLocaleString('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR',
-                  })}
-                </p>
-              </div>
-            ))}
-          </>
-        )}
+              ))}
+            </>
+          )}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
-export default ProductPage;
+  export default ProductFromServer;
+  ```
+
+  [[source code](https://github.com/argianardi/sinauNextJs/blob/client-side-rendering/src/views/Product/ProductFromServer.tsx)]
+
+- Buat file page product, tempat untuk fetch api
+
+  ```
+  // src/pages/product/csr.tsx
+
+  import axios from 'axios';
+  import React, { useEffect, useState } from 'react';
+  import styles from '@/styles/product.module.scss';
+  import useSWR from 'swr';
+  import { fetcher } from '@/utils/swr/fetcher';
+  import ProductFromServer from '@/views/Product/ProductFromServer';
+
+  const ProductPage = () => {
+    // useEffect(() => {
+    //   getProducts();
+    // }, []);
+
+    // const getProducts = async () => {
+    //   try {
+    //     const response = await axios.get('api/products');
+    //     // console.log(response.data.data);
+    //     setProducts(response.data.data);
+    //   } catch (error) {
+    //     console.log('terjadi kesalahan: ', error);
+    //   }
+    // };
+
+    const { data, error, isLoading } = useSWR('/api/products', fetcher);
+
+    return <ProductFromServer products={isLoading ? [] : data.data} />;
+  };
+
+  export default ProductPage;
+  ```
+
+  [[Source Code](https://github.com/argianardi/sinauNextJs/blob/client-side-rendering/src/pages/product/csr.tsx)]
+
+Berikut skema struktur keseluruhan filenya:
+
+```
+project-root/
+  ├─ pages/
+  │   ├─ api/
+  │   │   ├─ hello.ts
+  |   |   ├─ products-data-local.ts
+  │   │   ├─ products.ts
+  │   ├─ product-data-local/
+  |   |   ├─ index.tsx
+  │   ├─ product/
+  |   |   ├─ csr.tsx
+  ├─ views/
+  |   ├─ Product
+  │   │   ├─ ProductFromServer.tsx
+  │   │   ├─ ProductView.tsx
+  │   │   ├─ ...
+  ├─ ...
 ```
 
-[Source Code](https://github.com/argianardi/sinauNextJs/blob/server-side-rendering/src/pages/product/csr.tsx)
+[[Source Code](https://github.com/argianardi/sinauNextJs/tree/client-side-rendering/src)]
 
 ## Server Side Rendering
 
