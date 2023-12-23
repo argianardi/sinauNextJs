@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@/styles/product.module.scss';
+import styles from '@/views/Product/Product.module.scss';
 import axios from 'axios';
 
 type productType = {
@@ -13,7 +13,7 @@ type productType = {
 const ProductPage = ({ products }: { products: productType[] }) => {
   return (
     <div className={styles.product}>
-      <h1 className={styles.product__title}>Product Page</h1>
+      <h1 className={styles.product__title}>Product Page ssr</h1>
       <div className={styles.product__content}>
         {products.length > 0 ? (
           <>
