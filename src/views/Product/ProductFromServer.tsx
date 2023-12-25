@@ -1,19 +1,18 @@
 import React from 'react';
 
 import styles from '@/views/Product/Product.module.scss';
+import { productType } from '@/types/product.type';
 
-type product = {
-  category: string;
-  id: string;
-  image: string;
-  name: string;
-  price: number;
-};
-
-const ProductFromServer = ({ products }: { products: product[] }) => {
+const ProductFromServer = ({
+  products,
+  title,
+}: {
+  products: productType[];
+  title: string;
+}) => {
   return (
     <div className={styles.product}>
-      <h1 className={styles.product__title}>Product Page</h1>
+      <h1 className={styles.product__title}>{title}</h1>
       <div className={styles.product__content}>
         {products.length === 0 ? (
           <div className={styles.product__content__skeleton}>
@@ -24,7 +23,7 @@ const ProductFromServer = ({ products }: { products: product[] }) => {
           </div>
         ) : (
           <>
-            {products?.map((product: product) => (
+            {products?.map((product: productType) => (
               <div key={product.id} className={styles.product__content__item}>
                 <div className={styles.product__content__item__image}>
                   <img src={product.image} alt={product.name} />
