@@ -1,19 +1,14 @@
 ## Key Word
 
 - <details open>
-    <summary><a href="#atomic-design">Atomic Desigin</a></summary>
-    <ul>
-      <li><a href="#props-1">Props</a></li>
-      <li><a href="#default-props">Default Props</a></li>
-    </ul>
+    <a href="#atomic-design">Atomic Desigin</a>
   </details>
 - <details open>
        <summary><a href="#routing">Routing</a></summary>
        <ul>
          <li><a href="#basic-routes">Basic Route</a></li>
          <li><a href="#nested-routes">Nested Route</a></li>
-         <li><a href="#dynamic-routes">Dynamic Route</a></li>
-         <li><a href="#nested-dynamic-routes">Nested Dinamic Route</a></li>
+         <li><a href="#dynamic-routes-dan-nested-dinamic-routes">Dynamic Route dan Nested Dinamic Routes</a></li>
          <li><a href="#catch-all-routes">Catch All Routes</a></li>
          <li><a href="#nested-dynamic-routes">Nested Dinamic Route</a></li>
          <li><a href="#link">Link</a></li>
@@ -22,17 +17,12 @@
        </ul>
   </details>
 - <details open>
-       <summary><a href="#kumpulan-fitur">Kumpulan Fitur</a></summary>
-       <ul>
-         <li><a href="#conditional-rendering-sebuah-component-di-page-tertentu">Conditional Rendering Komponen di pages Tertentu</a></li>
-       </ul>
-  </details>
-- <details open>
        <summary><a href="#styling">Styling</a></summary>
        <ul>
          <li><a href="#global-css">Global CSS</a></li>
          <li><a href="#css-modules">Module CSS</a></li>
          <li><a href="#sass-syntactically-awesome-style-sheets">SASS</a></li>
+         <li><a href="#menggunakan-tailwind-css">Tailwind</a></li>
        </ul>
   </details>
 - <details open>
@@ -44,8 +34,55 @@
          <li><a href="#problem-dalam-penggunaan-aspath">Problem Dalam Penggunaan asPath</a></li>
        </ul>
   </details>
+- <details open>
+  <summary><a href="#api-routes">API Routes</a></summary>
+  <ul>
+     <li><a href="#pembuatan-api-routes-sisi-backend">Buat API Routes (Sisi Backend)</a></li>
+      <li><a href="#fetch-api-dari-api-rotes-sisi-front-end">Fetch API dari API Routes (sisi Front End)</a></li>
+  </ul>
+  </details>
 - <a href="#client-side-rendering">Client Side Rendering (CSR)</a>
 - <a href="#server-side-rendering">Server Side Rendering (SSR)</a>
+- <details open>
+    <summary><a href="#kumpulan-fitur">Kumpulan Fitur</a></summary>
+     <ul>
+       <li><a href="#conditional-rendering-sebuah-component-di-page-tertentu">Conditional Rendering Komponen di pages Tertentu</a></li>
+       <li><a href="#membuat-title-page-dinamis-berganti-sesuai-page-yang-dibuka">Membuat Title Page Dinamis Suai Page yang Dibuka </a></li> 
+      </ul>
+  </details>
+
+## Istilah - Istilah Di Dunia Software Development
+
+- Compiling <br/>
+  Merupakan proses mentransformasi kode dari bahasa satu ke dalam bahasa lain atau versi dari bahasa tersebut.
+- Minifying <br/>
+  Proses menghapus formatting dan komentar yang tidak digunakan tanpa mengubah fungsionalitas kode dengan tujuan untuk meningkatkan kinerja aplikasi dengan mengurangi ukuran file.
+
+- Bundling <br/>
+  Proses menggabungkan file ke dalam bundel yang dioptimalkan untuk browser, dengan tujuan mengurangi jumlah permintaan file saat pengguna mengunjungi halaman web.
+- Code Spliting <br/>
+  Proses pemisahan bundel menjadi bagian - bagian kecil yang dibutuhkan oleh setiap entry point (url/path) dengna tujuan untuk meningkatkan initial load time aplikasi dengan hanya memuat kode yang diperlukan untuk menjalankan halaman tersebut.
+- Build Time <br/>
+  Mengacu pada waktu dimana saat aplikasi sedang di-build (mentransformasi kode menjadi production environment) hingga akhirnya aplikasi siap digunakan.
+- Runtime <br/>
+  Mengacu pada waktu saat aplikasi sudah selesai di-build dan di-deploy.
+- Client <br/>
+  Merujuk ke browser pada perangkat pengguna yang mengirimkan request ke server yang kemudian diterjemahkan menjadi UI.
+- Server <br/>
+  Mengacu pada perangkat yang menyimpan kode aplikasi yang menerima permintaan dari client, melakukan komputasi, dan mengirimkan kembali respons yang sesuai.
+- Rendering <br/>
+  Proses mengonversi kode menjadi representasi HTML dari sebuah UI yang dapat dilakukan di client maupun di server dan dapat terjadi pada saat build time maupun runtime.
+- Client Side Rendering <br/>
+  Pengambilan data external dan transformasi kode menjadi representasi HTML dari sebuah UI terjadi di client.
+- Pre-Rendering (Server Side Rendering & Static Site Generation) <br/>
+  - Pengambilan data eksternal (dari api) dan transformasi kode menjadi representasi HTML dari sebuah UI terjadi sebelum hasilnya dikirim ke client.
+  - HTML akan di-generate kemudian HTML, data dan javascript dikirim ke client.
+  - HTML digunakan untuk menampilkan UI tapi belum interaktif, sedangkan react akan melakukan proses hydration dengan menggunakan data dan javascript untuk membuat komponen menjadi interaktif.
+- Server Side Rendering <br/>
+  HTML akan di-generate kemudian HTML, data dan javascript dikirm ke client yang dilakukan saat run time.
+- Static Site Generation <br/>
+  HTML akan di generate di server namun hanya di-generate sekali saat build time. Sehingga content yang ditampilkan bersifat statis.
+
 
 ## Atomic Design
 
@@ -97,7 +134,7 @@ src/
 
 ## Routing
 
-Routing adalah bagian penting dari pengembangan aplikasi web yang memungkinkan pengguna berpindah antara halaman-halaman yang berbeda. Routing di Next js dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing).
+Routing adalah bagian penting dari pengembangan aplikasi web yang memungkinkan user berpindah dari satu halaman ke halaman lainnya. Routing di Next js dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing).
 
 Di Next js, routing berfokus pada folder pages. Setiap file yang dibuat di dalam folder pages secara otomatis menjadi rute yang dapat diakses di aplikasi kita. Misalnya, file pages/index.js akan menjadi halaman utama, dan pages/about.js akan menjadi halaman "About". Ini sangat memudahkan pengaturan dan pemeliharaan rute, karena kita tidak perlu mengkonfigurasi rute secara manual seperti pada beberapa frame work lain.
 
@@ -105,47 +142,93 @@ Nextjs mendukung berbagai jenis rute:
 
 ### Basic Routes
 
-Kita dapat membuat rute dasar hanya dengan membuat file/folder di dalam folder pages. Misalnya, `pages/contact.js` atau `pages/contact/index.js` akan menghasilkan URL `/contact`. Basic routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts)
+Kita dapat membuat rute dasar hanya dengan membuat file/folder di dalam folder pages. Misalnya, `pages/contact.tsx` atau `pages/contact/index.tsx` akan menghasilkan URL `baseDomain/contact`. Basic routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts). <br/>
+Berikut struktur filenya:
+
+```
+pages/
+|-- about/
+|   |  |-- index.tsx  // page about
+|-- index.tsx         // Beranda
+|-- contact.tsx       // page contact
+|-- ...
+```
+
+[[source code](https://github.com/argianardi/sinauNextJs/tree/routes/src/pages)]
+
+Sehingga jika user ingin mengakses page contact, dapat dilakukan menggunakan url `baseDomain/contact`.
 
 ### Nested Routes
 
-Merupakan cara untuk mengatur halaman-halaman di dalam halaman lain. Ini membantu membuat struktur navigasi yang lebih dalam dan terorganisir. Nested routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts). Misalnya kita ingin membangun situs berita dengan struktur berikut:
+Merupakan cara untuk mengatur beberpa halaman yang diletakkan di halaman lain. Ini membantu membuat struktur navigasi yang lebih dalam dan terorganisir. Nested routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts). Misalnya kita ingin membangun situs artikel dengan struktur berikut:
 
 ```
 pages/
-|-- index.jsx (Beranda)
+|-- index.tsx             // Beranda
 |-- category/
-|   |   |-- index.jsx (Daftar berita dalam kategori)
-|   |   |-- news.jsx (Detail berita)
+|   |   |-- index.tsx     // Daftar semua category artikel
+|   |   |-- news.tsx      // Daftar semua artikel yang ber-category news
+|   |   |-- sports.tsx    // Daftar semua artikel yang ber-category sports
 |-- ...
 ```
 
+[[source code](https://github.com/argianardi/sinauNextJs/tree/routes/src/pages)]
+
 URL yang dihasilkan dari struktur file di atas adalah:
 
-- Beranda: /, contohnya: https://www.basedomain.com/
-- Daftar Berita dalam Kategori: /category, contohnya: https://www.basedomain.com/category
-- Detail Berita: /category/news, contohnya https://www.basedomain.com/category/news
+- pages/index.tsx <br/>
+  - Merupakan Halaman Beranda.
+  - Url: `/`,
+  - Contoh penggunaan url: `https://www.basedomain.com/`
+- pages/category/index.tsx <br/>
+  - Merupakan page category menampilkan daftar category artikel.
+  - Url: `/category`,
+  - Contoh penggunaan url: `https://www.basedomain.com/category`
+- pages/category/news <br/>
+  - Merupakan page news yaitu salah satu category yang ada di dalam page category, menampilkan daftar artikel yang dikategorikan sebagai news.
+  - Url: `/category/news`,
+  - Contoh penggunaan url `https://www.basedomain.com/category/news`
+- pages/category/sports <br/>
+  - Merupakan page sports yaitu salah satu category yang ada di dalam page category, menampilkan daftar artikel yang dikategorikan sebagai sports.
+  - Url: `/category/sports`
+  - Contoh penggunaan url `https://www.basedomain.com/category/sports`.
 
-### Dynamic Routes
+### Dynamic Routes dan Nested Dinamic Routes
 
-Next.js memungkinkan kita untuk membuat rute dinamis menggunakan tanda kurung siku `[]`. Dynamic Routes memungkinkan kita membuat rute dinamis berdasarkan nilai parameter yang diberikan dalam URL. Dynamic routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#convention). Misalnya kita ingin membuat situs berita, berikut contoh struktur filenya:
+Next.js memungkinkan kita untuk membuat rute dinamis menggunakan tanda kurung siku `[]`. Dynamic Routes memungkinkan kita membuat rute dinamis berdasarkan nilai parameter yang diberikan dalam URL. Dynamic routes dibahas lebih lengkap [disini](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#convention). Misalnya kita ingin membuat halaman movie, berikut contoh struktur filenya:
 
 ```
 pages/
-|-- index.jsx (Halaman Utama)
-|-- news/
-|   |   |-- index.jsx (Halaman Daftar Kategori Berita)
-|   |   |-- [category].jsx (Halaman Daftar Berita dalam Kategori)
-|   |   |-- [category]/[slug].jsx (Halaman Detail Berita)
-|-- ...
+|-- movies/
+|   |-- index.tsx              // Halaman daftar semua film
+|   |-- [genre]/
+|       |-- index.tsx          // Halaman daftar film berdasarkan genre
+|       |-- [movieTitle].tsx         // Halaman detail film berdasarkan
+|       |-- review/
+|           |-- [reviewId].tsx // Halaman detail review film berdasarkan reviewId
+|--...
 ```
+
+[[soruce code](https://github.com/argianardi/sinauNextJs/tree/routes/src/pages/movies)]
 
 URL yang dihasilkan dari struktur file di atas adalah:
 
-- Halaman Utama: /, contohnya: https://www.basedomain.com/
-- Halaman Daftar Kategori Berita: /news, contohnya: https://www.basedomain.com/news
-- Halaman Daftar Berita dalam Kategori: /news/{parameter-bebas}, contohnya: https://www.basedomain.com/politics
-- Halaman Detail Berita: /news/politics/{parameter-bebas}, contohnya: https://www.basedomain.com/politics/strategi-politik-2024
+- movies/index.tsx <br/>
+  - Merupakan page yang menampilkan daftar semua genre movie.
+  - Url: `/movies`,
+  - Contoh penggunaan url: `https://www.basedomain.com/movies`
+- movies/[genre]/index.tsx <br/>
+  - Menampilkan daftar movie berdasarkan genre tertentu.
+  - Url: `/movies/{parameter bebas}`.
+  - Contoh penggunaan url: `https://www.basedomain.com/movies/comedy`
+- movies/[genre]/[movieTitle].tsx:
+  - Halaman ini menampilkan detail movie berdasarkan judul movie.
+  - Url: `/movies/{parameter bebas}/{parameter bebas}`.
+  - Contoh penggunaan url: /movies/comedy/inception, /movies/drama/shawshank-redemption, dst.
+- movies/[genre]/review/[reviewId].tsx:
+  - Nested dynamic route untuk menampilkan halaman detail review movie berdasarkan reviewId.
+  - Url: `/movies/{parameter bebas}/review/{parameter bebas}`.
+  - Contoh penggunaan url: /movies/comedy/inception/review/123, /movies/drama/shawshank-redemption/review/456, dst.
 
 Untuk mengambil query parameter dari dinamc routes tersebut kita bisa menggunakan `useRouter` dari next/router
 
@@ -163,25 +246,6 @@ const DetailProduct = () => {
 export default DetailProduct;
 ```
 
-### Nested Dynamic Routes
-
-Kita dapat menggabungkan rute dinamis dengan rute biasa dan bersarang. Nested Dynamic route dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#convention). Berikut contoh struktur filenya:
-
-```
-pages/
-|-- index.jsx (Halaman Utama)
-|-- posts/
-|   |   |-- [slug].jsx (Halaman Detail Postingan)
-|   |   |-- [slug]/comments.jsx (Halaman Komentar)
-|-- ...
-```
-
-URL yang dihasilkan dari struktur file di atas adalah:
-
-- Halaman Utama: /, contohnya: https://www.basedomain.com
-- Halaman detail postingan: /posts/{parameter-bebas}, contohnya: https://www.basedomain.com/posts/memories-of-paris
-- Halaman Komentar: /posts/{parameter-bebas}/comments, contohnya: https://www.example.com/posts/memories-of-paris/comments
-
 ### Catch-All Routes
 
 Catch-All Routes adalah jenis dynamic route di Next js yang menggunakan tanda kurung siku `[...slug]` dalam definisi rute. Ini memungkinkan kita untuk menangani banyak segmen path yang bervariasi dalam URL. Ketika kita mencocokkan URL dengan pola tertentu ke rute ini, seluruh segmen path atau query parameter yang cocok akan diambil dan disimpan dalam bentuk array. Cath all routes dibahas lebih lengkap [di sini](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#catch-all-segments).
@@ -198,37 +262,51 @@ Berikut contoh penggunaannya untuk case aplikasi blog yang terdiri dari berbagai
     - index.tss
   ```
 
-  - pages/index.tsx, adalah halaman beranda situs kita.
-  - pages/blog/index.tsx, adalah halaman daftar kategori di blog.
-  - pages/blog/[...slug].tsx, adalah Catch-All Routes yang akan menangani segmen path setelah /blog/. Ini adalah tempat utama di mana kita akan menangani semua kategori dan artikel.
+Berikut code di file `[...slug].tsx`:
 
-  Berikut code di file `[...slug].tsx`:
+```
+import { useRouter } from 'next/router';
+import React from 'react';
 
-  ```
-  import { useRouter } from 'next/router';
-  import React from 'react';
+const BlogDetail = () => {
+  const router = useRouter();
+  const { slug } = router.query as { slug: string[] };
+  //if access baseDomain.com/sports/monday/3 hottest news today
+  console.log(slug); //['sports', 'monday', '3 hottest news today']
 
-  const BlogDetail = () => {
-    const router = useRouter();
-    const { slug } = router.query as { slug: string[] };
-    console.log(slug); //['sports', 'monday', '3 hottest news today']
+  return (
+    <div>
+      <h2>Detail Blog</h2>
+      <p>Path Segments: {slug?.join('/')}</p>
+    </div>
+  );
+};
 
-    return (
-      <div>
-        <h2>Detail Blog</h2>
-        <p>Path Segments: {slug?.join('/')}</p>
-      </div>
-    );
-  };
+export default BlogDetail;
+```
 
-  export default BlogDetail;
-  ```
+[source code](https://github.com/argianardi/sinauNextJs/blob/routes/src/pages/blog/%5B...slug%5D.tsx)
 
-  [source code](https://github.com/argianardi/sinauNextJs/blob/routes/src/pages/blog/%5B...slug%5D.tsx)
+- pages/index.tsx, adalah halaman beranda situs kita.
+- pages/blog/index.tsx, adalah halaman daftar kategori di blog.
+- pages/blog/[...slug].tsx,
+  - Catch-All Routes yang akan menangani segmen path setelah /blog/. Ini adalah tempat utama di mana kita akan mengambil semua kategori dan artikel.
+  - Url: `/blog/{parameter bebas}/{parameter bebas}/{parameter bebas}/{parameter bebas}/{parameter bebas}`
+  - Contoh Penggunaan: baseDomain.com/sports/footbal/top-headline
 
-  Dalam contoh diatas, kita menggunakan Catch-All Routes di file `[...slug].tsx` untuk menangani segmen path setelah `/blog/`. Ini memungkinkan kita untuk menampilkan artikel berdasarkan kategori dan judul artikel dalam URL.
+### Optional Catch-All Routes
 
-  Misalnya, URL `http://localhost:3000/blog/sports/monday/3%20hottest%20news%20today` akan diarahkan ke halaman `BlogDetail`, di mana kita dapat menampilkan artikel dengan kategori "sports" dan "monday" berjudul "3 hottest news today". Dan variable `slug` akan berisi array of string seperti : [ "sports", "monday", "3 hottest news today" ].
+Optional Catch-All Routes dapat dijadikan opsional dengan menyertakan parameter dalam tanda kurung siku ganda `[[...segmen]]`. Berikut contoh struktur filenya:
+
+```
+- pages/
+  - sop/
+    - [[...slug]].tsx
+```
+
+[[source code](https://github.com/argianardi/sinauNextJs/tree/routes/src/pages/shop)]
+
+`pages/shop/[[...slug]].tsx` akan cocok dengan paramter kosong seperti `/shop`, dan juga url yang disertai parameter seperti `/shop/clothes`, `/shop/clothes/tops` dan `/shop/clothes/tops/t-shirts`.
 
 ### Link
 
@@ -329,7 +407,7 @@ Di dalam Next JS kita dapat melakukan styling dengan beberapa cara, semuanya dib
 
 ### Global CSS
 
-Global CSS adalah metode styling di mana kita dapat membuat dan mengaplikasikan styling (kelas dan properti css) yang berlaku secara global untuk seluruh aplikasi web kita. Ini berarti kelas dan properti css yang kita definisikan dalam file CSS global akan memengaruhi atau diterapkan ke semua halaman dan komponen dalam proyek Next JS kita. Berikut penerapannya di coding:
+Global CSS adalah metode styling di mana kita dapat membuat dan mengaplikasikan styling (kelas dan properti css) yang berlaku secara global untuk seluruh aplikasi web kita. Ini berarti kelas dan properti css yang kita definisikan dalam file CSS global akan memengaruhi atau diterapkan ke semua halaman dan komponen dalam proyek Next JS kita. Global css hanya dapat digunakan untuk file `_app.js` atau `_app.tsx` saja. Berikut penerapannya di coding:
 
 - Buat File CSS global <br/>
   Buat file CSS global dalam folder style dengan nama bebas misalnya dengan nama global.css atau styles.css yang nantinya akan diisi kelas dan properti css yang akan berlaku secara global. Berikut skema struktur foldernya:
@@ -401,53 +479,123 @@ Global CSS adalah metode styling di mana kita dapat membuat dan mengaplikasikan 
 CSS Modules adalah pendekatan yang memungkinkan kita untuk mengisolasi style komponen dengan membuat file CSS yang hanya berlaku untuk komponen tertentu saja. Ini dapat menghindari konflik nama kelas CSS antar komponen dalam aplikasi kita. Berikut contoh penggunaannya di coding:
 
 - Buat file Css Modul <br/>
-  Buat file CSS dengan ekstensi `.module.css`. Misalnya, jika kita memiliki komponen `MyComponent.jsx`, maka buat css module jadi `MyComponent.module.css`.
+  Buat file CSS dengan ekstensi `.module.css`. Misalnya, jika kita memiliki komponen `Login.tsx`, maka buat css module jadi `Login.module.css`.
 
   ```
-  // MyComponent.module.css
+  // Login.module.css
 
-  .button {
-    background-color: blue;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
+  .layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
+
   ```
+
+  [[source code](https://github.com/argianardi/sinauNextJs/blob/styling/src/views/Auth/Login/Login.module.css)]
 
   Berikut skema struktur filenya
 
   ```
   my-nextjs-app/
   |-- components/
-  |   |-- MyComponent.js
+  |   |-- MyComponent.tsx
   |-- pages/
-  |   |-- index.js
+  |   |-- auth/
+  |   |   |-- login.tsx
+  |   |-- index.tsx
   |-- styles/
   |   |-- MyComponent.module.css
+  |-- views
+  |   |-- Auth/
+  |   |   |-- Login/
+  |   |   |   |-- index.tsx
+  |   |   |   |-- Login.module.css
   |-- .babelrc
   |-- package.json
   |-- next.config.js
   |-- ...
   ```
 
+  [[source code](https://github.com/argianardi/sinauNextJs/tree/styling/src)]
+
 - Import CSS Modul di file jsx/tsx <br/>
-  Import CSS Module di komponen kita (misalnya, `MyComponent.tsx`), kita dapat mengimpor dan menggunakan kelas-kelas CSS dari modul tersebut.
+  Import CSS Module di komponen kita (misalnya, `Login.tsx`), kita dapat mengimpor dan menggunakan kelas-kelas CSS dari modul tersebut.
 
   ```
-  // MyComponent.jsx
+    // src/views/Auth/Login/index.tsx
 
+    import Link from 'next/link';
+  import { useRouter } from 'next/router';
   import React from 'react';
-  import styles from './MyComponent.module.css';
 
-  function MyComponent() {
+  import style from './Login.module.css';
+
+  const LoginViews = () => {
+    const { push } = useRouter();
+
+    const handleLogin = () => {
+      push('/product');
+    };
+
     return (
-      <button className={styles.button}>Tombol</button>
+      <div className={style.layout}>
+        <h1>Login Page</h1>
+        <button onClick={handleLogin}>Login</button>
+        <p>
+          Belum punya akun?, Register <Link href={'/auth/register'}>di sini</Link>{' '}
+        </p>
+      </div>
     );
-  }
+  };
 
-  export default MyComponent;
+  export default LoginViews;
   ```
+
+  [[source code](https://github.com/argianardi/sinauNextJs/blob/styling/src/views/Auth/Login/index.tsx)]
+
+### CSS in JS
+
+Kita bisa menambahkan class css di dalam tag html secara langsung menggunakan properti `style`. Berikut contoh penggunaannya di coding:
+
+```
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import style from './Login.module.css';
+
+const LoginViews = () => {
+  const { push } = useRouter();
+
+  const handleLogin = () => {
+    push('/product');
+  };
+
+  return (
+    <div className={style.layout}>
+      <h1>Login Page</h1>
+      <button onClick={handleLogin}>Login</button>
+      <p
+        style={{
+          border: '1px solid blue',
+          marginTop: '10px',
+          borderRadius: '10px',
+          padding: '8px',
+        }}
+      >
+        Belum punya akun?, Register <Link href={'/auth/register'}>di sini</Link>{' '}
+      </p>
+    </div>
+  );
+};
+
+export default LoginViews;
+```
+
+[[source code](https://github.com/argianardi/sinauNextJs/blob/styling/src/views/Auth/Login/index.tsx)]
 
 ### SASS (Syntactically Awesome Style Sheets)
 
@@ -517,6 +665,43 @@ Berikut contoh penggunaannya di coding:
   export default MyComponent;
   ```
 
+Atau kita juga bisa menggunakan class yang valuenya dinamis dan value tersebut berasal dari file lain (scss global).
+Misalnya kita ingin menggunakan class `background-color` yang valuenya dinamis dan berasal dari file scss global yaitu `color.scss` untuk file css module `Register.module.scss`. Berikut contoh penggunaan glocal scss yang digunakan untuk mendeklarasikan value color di coding:
+
+```
+styles/color.scss
+
+$schema: (
+  primary: #0f788d,
+);
+
+```
+
+[[source code](https://github.com/argianardi/sinauNextJs/blob/styling/src/styles/color.scss)]
+
+Kemudain kita dapat menggunakan value color di global scss tadi untuk module scss register di dalam file `Register.module.scss`. berikut contoh penggunaannya di coding:
+
+```
+views/Auth/Register/Register.module.scss
+
+@import '@/styles/color.scss';
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: map-get($map: $schema, $key: primary);
+}
+```
+
+[[source code](https://github.com/argianardi/sinauNextJs/blob/styling/src/views/Auth/Register/Register.module.scss)]
+
+### Menggunakan Tailwind CSS
+
+Konfigurasi tailwind untuk next page router sudah terdokumentasi dengan baiki [disini](https://nextjs.org/docs/pages/building-your-application/styling/tailwind-css)
+
 ## Custom Error Page
 
 Error page adalah halaman khusus yang ditampilkan ketika terjadi kesalahan, yaitu ketika user mengakses halaman dengan path yang tidak tersedia di dalam routing di aplikasi web kita. Berikut contoh penggunaannya di coding:
@@ -524,7 +709,7 @@ Error page adalah halaman khusus yang ditampilkan ketika terjadi kesalahan, yait
 ### Buat Error Page
 
 - Buat file Error Page <br/>
-  Buat file error page di dalam direktori pages dengan nama yang sesuai, Misalnya, 404.jsx atau 404.tsx. Berikut skema struktur foldernya:
+  Buat file error page di dalam direktori pages dengan nama yang sesuai, Misalnya, 404.tsx atau 404.jsx, \_error.tsx atau \_error.jsx. Berikut skema struktur foldernya:
 
   ```
   my-nextjs-app/
@@ -749,21 +934,35 @@ export default Custom404;
 
 API Routes adalah salah satu fitur yang powerfull di Next.js yang memungkinkan kita untuk membuat endpoint API langsung dari project Next js kita. API routes ini memungkinkan kita untuk mengekspos fungsi-fungsi yang dapat diakses melalui HTTP, seperti pengambilan data dari database, pemrosesan data, atau operasi lainnya. API Routes biasanya digunakan untuk menyediakan data untuk halaman web kita atau digunakan sebagai back-end untuk aplikasi client.
 
-### Pengaplikasian API Routes
+### Pembuatan API Routes (Sisi Backend)
 
 Berikut contoh penggunaannya di coding:
 
 - Buat Folder pages/api <br/>
   Pertama kita harus membuat folder dengan nama `api` di dalam folder pages di project Next.js kita. Semua file yang kita letakkan di dalam folder `api` ini akan menjadi API Routes.
 - Buat File API Route <br/>
-  Buat file JavaScript atau TypeScript di dalam folder `pages/api`. Nama file ini akan menjadi bagian dari URL API kita. Misalnya, jika kita membuat file users.js, API akan dapat diakses melalui `base-domain/api/users`.
+  Buat file JavaScript atau TypeScript di dalam folder `pages/api`. Nama file ini akan menjadi end point untuk API kita. Misalnya, jika kita membuat file dengan nama products-data-local.ts, API yang kita dapat diakses melalui url `base-domain/api/products-data-local`.
 - Buat Logic API <br/>
-  Di dalam file API Route tersebut, kita dapat menyediakan logika untuk API kita. Kita dapat mengimpor modul, mengambil data dari database, melakukan operasi tertentu, dan kemudian mengembalikan respons dalam format JSON. Berikut contoh penggunaannya di coding:
+  Di dalam file API Route tersebut, kita dapat menyediakan logika untuk API kita. Kita dapat mengimpor modul, mengambil data dari database (untuk contoh ini kita menggunakan fake data yang kita asign sendiri), melakukan operasi tertentu, dan kemudian mengembalikan respons dalam format JSON.
+  Berikut skema struktur folder untuk API routes di next js
+
+  ```
+  project-root/
+    ├─ pages/
+    │   ├─ api/
+    │   │   ├─ hello.ts
+    |   |   ├─ products-data-local.ts
+    │   │   ├─ products.ts
+    │   │   ├─ ...
+    ├─ ...
+  ```
+
+  Berikut contoh penggunaannya di coding:
 
   ```
   import { NextApiRequest, NextApiResponse } from 'next';
 
-  // Definisikan tipe data yang akan digunakan untuk respon API (untuk typescript)
+  // Define tipe data untuk respon API (khusus untuk typescript)
   type Data = {
     status: boolean;
     statusCode: number;
@@ -785,13 +984,13 @@ Berikut contoh penggunaannya di coding:
       {
         id: 101,
         name: 'Sepatu Olahraga Nike Air Zoom Pegasus 38',
-        price: 120.0,
+        price: 120000,
         size: '42',
       },
       {
         id: 202,
-        name: 'Kamera DSLR Canon EOS 5D Mark IV',
-        price: 2499.99,
+        name: 'Kamera DSLR Canon EOS 200D',
+        price: 249000,
         size: 'N/A',
       },
     ];
@@ -801,30 +1000,103 @@ Berikut contoh penggunaannya di coding:
   }
   ```
 
-  - `Export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) { ... }` <br/>
-    Ini adalah eksport dari fungsi yang akan menangani API request. Fungsi handler menerima dua parameter:
-    - req (NextApiRequest): Objek yang mewakili HTTP request yang masuk.
-    - res (NextApiResponse<Data>): Objek yang digunakan untuk mengirim respon HTTP kembali ke client dengan tipe data Data yang telah didefinisikan sebelumnya.
-  - Di dalam fungsi handler, ada deklarasi variabel `data` yang berisi array of objek produk yang akan digunakan sebagai data respon API.
-  - `res.status(200).json({ status: true, statusCode: 200, data });` <br/>
-    Ini adalah code yang mengirim respon JSON ke client:
-    - Fungsi status(200) digunakan untuk mengatur kode status HTTP menjadi 200 (OK)
-    - Kemudian json({ ... }) digunakan untuk mengirim data dalam format JSON sebagai respon. Data yang dikirimkan termasuk status, code status, dan array produk yang sudah didefinisikan sebelumnya.
+  [[source code](https://github.com/argianardi/sinauNextJs/blob/API-Route/src/pages/api/products-data-local.ts)]
 
-- Lakukan integrasi API di Halaman/komponen kita (sisi front end) <br/>
-  Kita dapat melakukan integrasi API yang telah kita buat di halaman Next.js kita, dengan menggunakan fetch atau library HTTP lainnya.
+- `Export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) { ... }` <br/>
+  Ini adalah eksport dari fungsi yang akan menangani API request. Fungsi handler menerima dua parameter:
+  - req (NextApiRequest): Objek yang mewakili HTTP request yang masuk.
+  - res (NextApiResponse<Data>): Objek yang digunakan untuk mengirim respon HTTP kembali ke client dengan tipe data Data yang telah didefinisikan sebelumnya.
+- Di dalam fungsi handler, ada deklarasi variabel `data` yang berisi array of objek produk yang akan digunakan sebagai data respon API.
+- `res.status(200).json({ status: true, statusCode: 200, data });` <br/>
+  Ini adalah code yang mengirim respon JSON ke client:
+  - Fungsi status(200) digunakan untuk mengatur kode status HTTP menjadi 200 (OK)
+  - Kemudian json({ ... }) digunakan untuk mengirim data dalam format JSON sebagai respon. Data yang dikirimkan termasuk status, code status, dan array produk yang sudah didefinisikan sebelumnya.
+- Selanjutnya coba tes api yang kita buat, di browser dengan url `baseDomain/api/namaFile`.
 
-Berikut skema struktur folder untuk API routes di next js
+[[source code](https://github.com/argianardi/sinauNextJs/tree/API-Route/src/pages/api)]
+
+### Fetch API dari API Rotes (Sisi Front End)
+
+Setelah berhasil membuat API selanjutnya kita buat consume api tersebut di sisi front end, berikut langkah - langkahnya:
+
+- Buat Komponen view di dalam folder view, berikut contoh penggunaannnya di coding:
+
+  ```
+  import React from 'react';
+
+  type Product = {
+    id: number;
+    name: string;
+    price: number;
+    size: string;
+  };
+
+  const ProductView = ({ products }: { products: Product[] }) => {
+    return (
+      <div>
+        <h2>Daftar Produk</h2>
+        <ul>
+          {products?.map((product) => (
+            <li>
+              {product.name} - {`Size: ${product.size}`}
+              <br />
+              Harga: Rp {product.price.toLocaleString('id-ID')}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
+  export default ProductView;
+  ```
+
+  [[source code]](https://github.com/argianardi/sinauNextJs/blob/API-Route/src/views/Product/ProductView.tsx)
+
+  - Selanjutnya buat file page, lakukan fetching api dari api routes yang kita buat, import komponen view yang kita buat tadi dan kirimkan data hasil fetch api dari api routes ke komponen view melalui prop. Berikut contoh penggunaannya di coding:
+
+    ```
+    import ProductView from '@/views/Product/ProductView';
+    import React, { useEffect, useState } from 'react';
+
+    const ProductDataLocalPage = () => {
+      const [products, setProducts] = useState([]);
+
+      useEffect(() => {
+        fetch('/api/products-data-local')
+          .then((res) => res.json())
+          .then((data) => {
+            setProducts(data?.data);
+          });
+      }, []);
+
+      return <ProductView products={products} />;
+    };
+
+    export default ProductDataLocalPage;
+    ```
+
+    [[source code](https://github.com/argianardi/sinauNextJs/blob/API-Route/src/pages/product-data-local/index.tsx)]
+
+Berikut contoh struktur filenya:
 
 ```
 project-root/
   ├─ pages/
   │   ├─ api/
-  │   │   ├─ users.js
-  │   │   ├─ products.js
+  │   │   ├─ hello.ts
+  |   |   ├─ products-data-local.ts
+  │   │   ├─ products.ts
+  │   ├─ product-data-local/
+  |   |   ├─ index.tsx
+  ├─ views/
+  |   ├─ Product
+  │   │   ├─ ProductView.tsx
   │   │   ├─ ...
   ├─ ...
 ```
+
+[[source code](https://github.com/argianardi/sinauNextJs/tree/API-Route/src)]
 
 ### Kapan Menggunakan API Routes
 
@@ -839,81 +1111,131 @@ Kita dapat menggunakan API Routes di Next.js dalam berbagai situasi, termasuk:
 
 Pengambilan data eksternal dan transformasi code menjadi representasi HTML dari sebuah UI yang terjadi di client (client-side). Pada client side rendering biasanya browser akan menerima struktur HTML kosong serti tag html, body dan div kemudian server akan mengirimkan serangkaian instruksi javascript untuk mengkonstrak atau membangun sebuah UI selanjutnya akan dilakukan rendering di sisi client. Ini berarti semua proses rendering tersebut dilakukan di device user (client-side).
 
-```
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import styles from '@/styles/product.module.scss';
-import useSWR from 'swr';
-import { fetcher } from '@/utils/swr/fetcher';
+Misalnya kita ingin melakaukan fetch api product dari server menggunakan Client Side Rendering, dapat dilakukan dengan langkah - langkah berikut:
 
-type productType = {
-  category: string;
-  id: string;
-  image: string;
-  name: string;
-  price: number;
-};
+- Buat file component view product, berikut contoh penggunaannya dicoding:
 
-const ProductPage = () => {
-  // useEffect(() => {
-  //   getProducts();
-  // }, []);
+  ```
+  //src/views/ProductFromServer.tsx
 
-  // const getProducts = async () => {
-  //   try {
-  //     const response = await axios.get('api/products');
-  //     // console.log(response.data.data);
-  //     setProducts(response.data.data);
-  //   } catch (error) {
-  //     console.log('terjadi kesalahan: ', error);
-  //   }
-  // };
+  import React from 'react';
 
-  const { data, error, isLoading } = useSWR('/api/products', fetcher);
+  import styles from '@/views/Product/Product.module.scss';
 
-  return (
-    <div className={styles.product}>
-      <h1 className={styles.product__title}>Product Page</h1>
-      <div className={styles.product__content}>
-        {isLoading ? (
-          <div className={styles.product__content__skeleton}>
-            <div className={styles.product__content__skeleton__image} />
-            <div className={styles.product__content__skeleton__name} />
-            <div className={styles.product__content__skeleton__category} />
-            <div className={styles.product__content__skeleton__price} />
-          </div>
-        ) : (
-          <>
-            {data.data?.map((product: productType) => (
-              <div key={product.id} className={styles.product__content__item}>
-                <div className={styles.product__content__item__image}>
-                  <img src={product.image} alt={product.name} />
+  type product = {
+    category: string;
+    id: string;
+    image: string;
+    name: string;
+    price: number;
+  };
+
+  const ProductFromServer = ({ products }: { products: product[] }) => {
+    return (
+      <div className={styles.product}>
+        <h1 className={styles.product__title}>Product Page</h1>
+        <div className={styles.product__content}>
+          {products.length === 0 ? (
+            <div className={styles.product__content__skeleton}>
+              <div className={styles.product__content__skeleton__image} />
+              <div className={styles.product__content__skeleton__name} />
+              <div className={styles.product__content__skeleton__category} />
+              <div className={styles.product__content__skeleton__price} />
+            </div>
+          ) : (
+            <>
+              {products?.map((product: product) => (
+                <div key={product.id} className={styles.product__content__item}>
+                  <div className={styles.product__content__item__image}>
+                    <img src={product.image} alt={product.name} />
+                  </div>
+                  <h4 className={styles.product__content__item__name}>
+                    {product.name}
+                  </h4>
+                  <p className={styles.product__content__item__category}>
+                    {product.category}
+                  </p>
+                  <p
+                    className={`text-sm ${styles.product__content__item__price}`}
+                  >
+                    {product.price.toLocaleString('id-ID', {
+                      style: 'currency',
+                      currency: 'IDR',
+                    })}
+                  </p>
                 </div>
-                <h4 className={styles.product__content__item__name}>
-                  {product.name}
-                </h4>
-                <p className={styles.product__content__item__category}>
-                  {product.category}
-                </p>
-                <p className={styles.product__content__item__price}>
-                  {product.price.toLocaleString('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR',
-                  })}
-                </p>
-              </div>
-            ))}
-          </>
-        )}
+              ))}
+            </>
+          )}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
-export default ProductPage;
+  export default ProductFromServer;
+  ```
+
+  [[source code](https://github.com/argianardi/sinauNextJs/blob/client-side-rendering/src/views/Product/ProductFromServer.tsx)]
+
+- Buat file page product, tempat untuk fetch api
+
+  ```
+  // src/pages/product/csr.tsx
+
+  import axios from 'axios';
+  import React, { useEffect, useState } from 'react';
+  import styles from '@/styles/product.module.scss';
+  import useSWR from 'swr';
+  import { fetcher } from '@/utils/swr/fetcher';
+  import ProductFromServer from '@/views/Product/ProductFromServer';
+
+  const ProductPage = () => {
+    // useEffect(() => {
+    //   getProducts();
+    // }, []);
+
+    // const getProducts = async () => {
+    //   try {
+    //     const response = await axios.get('api/products');
+    //     // console.log(response.data.data);
+    //     setProducts(response.data.data);
+    //   } catch (error) {
+    //     console.log('terjadi kesalahan: ', error);
+    //   }
+    // };
+
+    const { data, error, isLoading } = useSWR('/api/products', fetcher);
+
+    return <ProductFromServer products={isLoading ? [] : data.data} />;
+  };
+
+  export default ProductPage;
+  ```
+
+  [[Source Code](https://github.com/argianardi/sinauNextJs/blob/client-side-rendering/src/pages/product/csr.tsx)]
+
+Berikut skema struktur keseluruhan filenya:
+
+```
+project-root/
+  ├─ pages/
+  │   ├─ api/
+  │   │   ├─ hello.ts
+  |   |   ├─ products-data-local.ts
+  │   │   ├─ products.ts
+  │   ├─ product-data-local/
+  |   |   ├─ index.tsx
+  │   ├─ product/
+  |   |   ├─ csr.tsx
+  ├─ views/
+  |   ├─ Product
+  │   │   ├─ ProductFromServer.tsx
+  │   │   ├─ ProductView.tsx
+  │   │   ├─ ...
+  ├─ ...
 ```
 
-[Source Code](https://github.com/argianardi/sinauNextJs/blob/server-side-rendering/src/pages/product/csr.tsx)
+[[Source Code](https://github.com/argianardi/sinauNextJs/tree/client-side-rendering/src)]
 
 ## Server Side Rendering
 
@@ -982,7 +1304,6 @@ Misalnya kita ingin melakaukan fetch api product dari server menggunakan Server 
 
   export default ProductFromServer;
   ```
-
   [Source Code](https://github.com/argianardi/sinauNextJs/blob/server-side-rendering/src/views/Product/ProductFromServer.tsx)
 
 - Buat file page product di folder `pages`, tempat untuk fetch api. Berikut contoh penggunaannya di coding:
@@ -1070,6 +1391,28 @@ project-root/
 [[Source Code](https://github.com/argianardi/sinauNextJs/tree/server-side-rendering/src)]
 Pada component `ProductFromServe` terdapat bagian skeleton, untuk SSR skeleton tersebut tidak akan berguna karena di SSR tidak memerlukan proses loading saat melakukan fetching API. Semua data eksternal dari API akan langsung diberikan secara bersamaan atau satu paket dengan komponen HTML yang kita gunakan.
 
+## Static Site Generation
+Static Site Generation (SSG) adalah salah satu teknik utama dalam Next.js yang memungkinkan kita untuk menghasilkan halaman web yang sangat efisien dan cepat dengan merender konten menjadi HTML statis selama build time. pada SSG ini, HTML akan di-generate di server namun hanya di-generate sekali saat build time. Sehingga content yang ditampilkan bersifat statis. Berikut contoh penggunaannya di coding:  
+export async function getStaticProps() {
+  try {
+    const response = await axios.get('http://localhost:3000/api/products');
+
+    return {
+      props: {
+        products: response.data.data,
+      },
+    };
+  } catch (error) {
+    console.error('Terjadi kesalahan dalam mengambil data produk:', error);
+    return {
+      props: {
+        products: [],
+      },
+    };
+
+[Source Code](https://github.com/argianardi/sinauNextJs/blob/staticSiteGeneration/src/pages/product/ssg.tsx).
+
+
 ## Kumpulan Fitur
 
 ### Conditional Rendering Sebuah Component di Page Tertentu
@@ -1108,3 +1451,58 @@ export default AppShell;
 Pada code conditional rendering `{!disabledNavbar.includes(pathname) && <Navbar />}` akan diperiksa apakah `pathname` saat ini (page yang sedang di-render) sama atau tidak dengan path yang ada dalam array `disabledNavbar`. Jika tidak sama, maka Navbar akan ditampilkan di dalam page saat ini. Ini digunakan untuk mengendalikan apakah Navbar akan muncul atau tidak berdasarkan path saat ini.
 
 </details>
+
+### Membuat Title Page Dinamis Berganti Sesuai Page yang dibuka
+
+Berikut langkah - langkah untuk membuatnya:
+
+- Buat code view page yang ingin dibuat dinamis titlenya didalam folder `src/views`, berikut contoh penggunaannya di coding:
+
+  ```
+  src/views/TitlePage/index.tsx
+
+  import Head from 'next/head';
+  import React from 'react';
+
+  const ViewTitlePage: React.FC<{
+    titleOfContent: string;
+    pageOfTitle: string;
+  }> = ({ titleOfContent, pageOfTitle }) => {
+    return (
+      <>
+        <Head>
+          <title>Sinau NextJS | {pageOfTitle} </title>
+        </Head>
+        <div>{titleOfContent}</div>
+      </>
+    );
+  };
+
+  export default ViewTitlePage;
+  ```
+
+  [[soruce code](https://github.com/argianardi/sinauNextJs/blob/errorPage/src/views/TitlePage/index.tsx)]
+
+- Buat file page yang ingin dibuat dinamis titlenya kemudian import view page tadi dan isikan prop title konten dan title pagenya, berikut contoh penggunaannya di coding:
+
+  ```
+  src/pages/title/page1.tsx
+
+  import ViewTitlePage from '@/views/TitlePage';
+  import React from 'react';
+
+  const Page1 = () => {
+    return (
+      <ViewTitlePage
+        titleOfContent="Belajar title page Halaman 1"
+        pageOfTitle="title page 1"
+      />
+    );
+  };
+
+  export default Page1;
+  ```
+
+  [[source code](https://github.com/argianardi/sinauNextJs/blob/errorPage/src/pages/title/page1.tsx)]
+
+Sehingga ketika user membuka url `baseDomain/title/page1`, akan terbuka page1 dengan title `sinau nextJS | page 1`.

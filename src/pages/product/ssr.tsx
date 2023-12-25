@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from '@/views/Product/Product.module.scss';
 import axios from 'axios';
 import ProductFromServer from '@/views/Product/ProductFromServer';
 import { productType } from '@/types/product.type';

@@ -3,14 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styles from '@/styles/product.module.scss';
 import useSWR from 'swr';
 import { fetcher } from '@/utils/swr/fetcher';
-
-type productType = {
-  category: string;
-  id: string;
-  image: string;
-  name: string;
-  price: number;
-};
+import ProductFromServer from '@/views/Product/ProductFromServer';
 
 const ProductPage = () => {
   // useEffect(() => {
@@ -29,43 +22,7 @@ const ProductPage = () => {
 
   const { data, error, isLoading } = useSWR('/api/products', fetcher);
 
-  return (
-    <div className={styles.product}>
-      <h1 className={styles.product__title}>Product Page</h1>
-      <div className={styles.product__content}>
-        {isLoading ? (
-          <div className={styles.product__content__skeleton}>
-            <div className={styles.product__content__skeleton__image} />
-            <div className={styles.product__content__skeleton__name} />
-            <div className={styles.product__content__skeleton__category} />
-            <div className={styles.product__content__skeleton__price} />
-          </div>
-        ) : (
-          <>
-            {data.data?.map((product: productType) => (
-              <div key={product.id} className={styles.product__content__item}>
-                <div className={styles.product__content__item__image}>
-                  <img src={product.image} alt={product.name} />
-                </div>
-                <h4 className={styles.product__content__item__name}>
-                  {product.name}
-                </h4>
-                <p className={styles.product__content__item__category}>
-                  {product.category}
-                </p>
-                <p className={styles.product__content__item__price}>
-                  {product.price.toLocaleString('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR',
-                  })}
-                </p>
-              </div>
-            ))}
-          </>
-        )}
-      </div>
-    </div>
-  );
+  return <ProductFromServer products={isLoading ? [] : data.data} />;
 };
 
 export default ProductPage;

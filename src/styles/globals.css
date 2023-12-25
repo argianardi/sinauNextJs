@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -21,4 +25,8 @@ a {
   height: 70px;
   background-color: black;
   color: white;
+}
+
+.text-red {
+  color: red;
 }

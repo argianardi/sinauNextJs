@@ -19,7 +19,6 @@ const ProductFromServer = ({
             <div className={styles.product__content__skeleton__image} />
             <div className={styles.product__content__skeleton__name} />
             <div className={styles.product__content__skeleton__category} />
-            <div className={styles.product__content__skeleton__category} />
             <div className={styles.product__content__skeleton__price} />
           </div>
         ) : (

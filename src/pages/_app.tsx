@@ -1,5 +1,5 @@
-import AppShell from '@/components/layouts/AppShell';
 import '@/styles/globals.css';
+import AppShell from '@/components/layouts/AppShell';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
